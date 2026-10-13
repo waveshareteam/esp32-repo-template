@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/waveshareteam/esp32-repo-template/v1/schema/product.schema.json",
+  "product": "<PRODUCT-MODEL>",
+  "product_url": "https://www.waveshare.com/<product-page>.htm",
+  "tier": 0,
+  "target": "<esp-idf-target>",
+  "esp_idf": { "versions": ["<vX.Y.Z>", "<vX.Y.Z>"] },
+  "arduino": {
+    "core": "<X.Y.Z>",
+    "fqbn": "<esp32:esp32:board:Option=value,...>"
+  },
+  "factory_firmware": "https://github.com/waveshareteam/<PRODUCT-MODEL>/releases"
+}

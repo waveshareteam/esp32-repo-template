@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/waveshareteam/esp32-repo-template/v1/schema/product.schema.json",
+  "title": "Waveshare ESP32 product repository configuration",
+  "description": "The only product-specific input of the shared CI. Stored as .github/product.json in every product repository.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["product", "product_url", "tier", "target"],
+  "anyOf": [
+    { "required": ["esp_idf"] },
+    { "required": ["arduino"] }
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "product": {
+      "description": "Product model. Used as the firmware archive name prefix and in release manifests.",
+      "type": "string",
+      "minLength": 1
+    },
+    "product_url": {
+      "description": "Official product page.",
+      "type": "string",
+      "pattern": "^https?://"
+    },
+    "tier": {
+      "description": "Repository level defined in docs/spec.md: 0 hygiene, 1 build, 2 release.",
+      "type": "integer",
+      "enum": [0, 1, 2]
+    },
+    "target": {
+      "description": "ESP-IDF target passed to `idf.py set-target` and to esptool.",
+      "type": "string",
+      "pattern": "^esp32([a-z][0-9]+)?$"
+    },
+    "esp_idf": {
+      "description": "Present when the repository has examples/esp-idf/.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["versions"],
+      "properties": {
+        "versions": {
+          "description": "ESP-IDF release tags. Every first-party project is built with each of them.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+          }
+        }
+      }
+    },
+    "arduino": {
+      "description": "Present when the repository has examples/arduino/.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["core", "fqbn"],
+      "properties": {
+        "core": {
+          "description": "Arduino-ESP32 core version.",
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "fqbn": {
+          "description": "Full arduino-cli FQBN including board options.",
+          "type": "string",
+          "pattern": "^[^:\\s]+:[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
+        }
+      }
+    },
+    "factory_firmware": {
+      "description": "Where to download the factory firmware, preferably the repository Releases page so the link survives a firmware update. Large binaries are not committed to git.",
+      "type": "string"
+    },
+    "overrides": {
+      "description": "Per-product additions to the template defaults. Lists are appended to the default list; every other value replaces the default.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ci_routing": {
+          "description": "Merged into defaults/ci-routing.json.",
+          "type": "object"
+        },
+        "markdown_audit": {
+          "description": "Merged into defaults/markdown-audit.json.",
+          "type": "object"
+        }
+      }
+    }
+  }
+}

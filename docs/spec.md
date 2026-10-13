@@ -1,0 +1,106 @@
+# 产品仓库规范
+
+本文定义 Waveshare ESP32 产品仓库的目录结构、达标级别，以及每类信息应该写在哪里。
+
+## 目录规范
+
+产品仓库只放用户关心的内容，外加一份产品配置：
+
+```text
+<PRODUCT-MODEL>/
+├── .github/
+│   ├── workflows/build.yml        # 约 10 行，调用本仓库的可复用工作流
+│   └── product.json               # 唯一的产品配置
+├── examples/
+│   ├── esp-idf/<示例>/            # 每个示例有 README.md + README_ZH.md
+│   └── arduino/
+│       ├── examples/<示例>/       # 每个示例有 README.md + README_ZH.md
+│       └── libraries/
+│           ├── board_config/      # 板级配置，如 pin_config.h
+│           ├── lv_conf.h
+│           └── <第三方库>/        # 只保留编译所需文件 + LICENSE
+├── hardware/                      # 原理图等硬件资料
+├── docs/images/                   # README 用到的图片
+├── README.md
+├── README_ZH.md
+├── LICENSE
+└── .gitignore
+```
+
+目录规则：
+
+- 顶层只允许出现上面列出的条目。CI 脚本、测试、发布工具、规范文档放在本仓库。CONTRIBUTING、SUPPORT、SECURITY、issue 和 PR 模板由 `waveshareteam/.github` 提供，组织下的仓库自动继承。
+- 没有 Arduino 示例的产品不建 `examples/arduino/`，也不在 `product.json` 里写 `arduino`。没有 ESP-IDF 示例的产品同理。
+- 示例目录不带框架版本号（不用 `ESP-IDF-v5.5/` 这类名字），版本只写在 `product.json`。
+- 第一方 Markdown 提供英文主文件和 `_ZH.md` 简体中文版，两者顶部互相链接。第三方库和上游组件自带的文档保持原样，不翻译、不改名。
+- 构建产物、下载的 CI 产物和大体积二进制文件（包括出厂固件）不提交到 Git。
+- `.gitmodules`、`.gitattributes`、`.gitkeep` 必须被跟踪，不要写进 `.gitignore`。
+- `.claude/`、`.cursor/`、`.codex/` 等 AI 编码代理的本地目录必须写进 `.gitignore`，不得提交。
+
+新仓库或迁移旧仓库时，从 [`skeleton/`](../skeleton/) 复制骨架。
+
+## 级别
+
+`product.json` 的 `tier` 字段记录仓库当前达到的级别。
+
+| 级别 | `tier` | 要求 |
+| --- | :---: | --- |
+| L0 卫生 | 0 | README 符合模板、有 LICENSE、`.gitignore` 正确、不提交构建产物和大体积二进制文件、第三方库只保留编译所需文件和 LICENSE |
+| L1 构建 | 1 | L0 + `product.json` + `build.yml`，所有示例 CI 编译通过，每个示例有 README |
+| L2 发布 | 2 | L1 + 打包合并固件、Release 门禁、版本说明写在 GitHub Release 里 |
+
+## 每类信息只有一个来源
+
+同一条信息只写在一个地方，其他地方需要时链接过去，不复制。
+
+| 信息 | 唯一来源 |
+| --- | --- |
+| 框架版本、FQBN | `product.json` |
+| 引脚定义 | 托管 BSP 或 `board_config/pin_config.h` |
+| 固件包格式、烧录说明 | 本仓库 [`docs/release.md`](release.md) 和固件包自带的 README |
+| issue 需提供的信息 | 组织仓库的 issue 模板 |
+| CI 和发布规则 | 本仓库 [`docs/ci.md`](ci.md)、[`docs/release.md`](release.md) |
+| 示例特有说明 | 该示例的 README |
+
+产品 README 里的版本表是 `product.json` 的展示，升级版本时两处一起修改。两处不一致时，以 `product.json` 为准。
+
+## 组件归属原则
+
+示例优先使用 Waveshare 和 Espressif 的托管组件，在 `idf_component.yml` 中声明依赖，不把可复用的 BSP、显示、触摸、传感器、音频或总线驱动复制进产品仓库。
+
+仓库里的本地组件按所有权和用途区分，判断清楚之后再决定去留：
+
+- **产品功能代码**：只服务于某个示例的 UI 或业务逻辑，留在该示例下。
+- **嵌入的上游框架**：保留源码、归属说明和文档，除非执行明确的上游同步，否则不改动。
+- **板级胶水代码**：构建在托管 BSP 之上、只对这块板有意义的适配层，留在使用它的示例下。
+
+具体做法：
+
+- 用托管组件替换本地副本的前提是：存在语义等价、硬件兼容，并且覆盖 `product.json` 所列全部框架版本的托管组件。
+- 开发板专用的示例组合、临时兼容代码和仅供示例使用的资源，放在使用它的示例附近。
+- 可复用的 BSP、显示、触摸、传感器、音频和总线修复，尽可能先进入共享组件源，而不是只修在产品仓库里。
+- 仅凭组件名称或目录位置，不足以证明某个组件可以删除。
+- 为了兼容性而限制依赖版本时，在清单旁边写明受影响的框架或 target、限制的原因，以及什么条件下可以放开。
+
+## 示例 README
+
+每个示例有 `README.md` 和 `README_ZH.md`，固定 5 节：功能、硬件需求、怎么运行、预期现象、常见问题。模板见 [`skeleton/example-README.md`](../skeleton/example-README.md) 和 [`skeleton/example-README_ZH.md`](../skeleton/example-README_ZH.md)。
+
+- 「常见问题」没有内容时写「暂无」，不要删除这一节。
+
+## 产品 README
+
+`README.md` 和 `README_ZH.md` 只面向用户，结构固定：
+
+| 章节 | 内容 |
+| --- | --- |
+| 头部 | 居中标题、徽章、语言切换、快捷链接、头图 |
+| ✨ 概述 | 两三句话 + 器件表 |
+| 📦 快速开始 | 下载合并固件包并烧录，5 步以内；出厂固件一行 |
+| 🧪 示例 | 每个框架一张表，每一项链接到示例目录 |
+| 🛠️ 开发环境 | 版本表：框架、版本、示例数 |
+| 📚 资料 | 原理图、产品页、Wiki |
+| 🤝 支持 | issue 和官方支持的链接 |
+| 📄 许可证 | 一行 |
+
+不写仓库结构表、CI 任务数、矩阵说明和维护者文档链接。章节图标和快捷链接由 [`defaults/markdown-audit.json`](../defaults/markdown-audit.json) 约束，`tests/test_homepage_contract.py` 会检查骨架 README 是否符合。
