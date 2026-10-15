@@ -19,6 +19,7 @@
 │           ├── board_config/      # 板级配置，如 pin_config.h
 │           ├── lv_conf.h
 │           └── <第三方库>/        # 只保留编译所需文件 + LICENSE
+├── factory_firmware/              # 可选，开源的出厂固件源码（一个 ESP-IDF 工程）
 ├── hardware/                      # 原理图等硬件资料
 ├── docs/images/                   # README 用到的图片
 ├── README.md
@@ -32,6 +33,9 @@
 - 顶层只允许出现上面列出的条目。CI 脚本、测试、发布工具、规范文档放在本仓库。CONTRIBUTING、SUPPORT、SECURITY、issue 和 PR 模板由 `waveshareteam/.github` 提供，组织下的仓库自动继承。
 - 没有 Arduino 示例的产品不建 `examples/arduino/`，也不在 `product.json` 里写 `arduino`。没有 ESP-IDF 示例的产品同理。
 - 示例目录不带框架版本号（不用 `ESP-IDF-v5.5/` 这类名字），版本只写在 `product.json`。
+- 每个示例都必须能用 `product.json` 列出的全部框架版本编译。
+- `examples/arduino/libraries/` 是所有草图共用的一套库，同一个库只放一个版本（例如只放一个 LVGL）。
+- 出厂固件源码开源时放在 `factory_firmware/`，并在 `product.json` 写 `factory_firmware.esp_idf`；不开源时不建这个目录，固件在发布时手动上传。见[发布](release.md#出厂固件)。
 - 第一方 Markdown 提供英文主文件和 `_ZH.md` 简体中文版，两者顶部互相链接。第三方库和上游组件自带的文档保持原样，不翻译、不改名。
 - 构建产物、下载的 CI 产物和大体积二进制文件（包括出厂固件）不提交到 Git。
 - `.gitmodules`、`.gitattributes`、`.gitkeep` 必须被跟踪，不要写进 `.gitignore`。
@@ -47,7 +51,7 @@
 | --- | :---: | --- |
 | L0 卫生 | 0 | README 符合模板、有 LICENSE、`.gitignore` 正确、不提交构建产物和大体积二进制文件、第三方库只保留编译所需文件和 LICENSE |
 | L1 构建 | 1 | L0 + `product.json` + `build.yml`，所有示例 CI 编译通过，每个示例有 README |
-| L2 发布 | 2 | L1 + 打包合并固件、Release 门禁、版本说明写在 GitHub Release 里 |
+| L2 发布 | 2 | L1 + 用 `v*` 标签发布：CI 生成的草稿 Release 经审阅后发布，版本说明写在 GitHub Release 里 |
 
 ## 每类信息只有一个来源
 

@@ -71,21 +71,19 @@ class ClassifyChangesTests(unittest.TestCase):
             self.assertEqual(global_result["esp_idf"]["mode"], "all", path)
             self.assertEqual(global_result["arduino"]["mode"], "all", path)
 
-    def test_firmware_is_reported_but_never_built(self) -> None:
-        result = self.classify(
-            "Firmware/README.md",
-            "Firmware/project/main/app.c",
-            "Firmware/factory.bin",
-            "Firmware/resources.zip",
-        )
+    def test_factory_firmware_source_builds_only_the_factory_firmware(self) -> None:
+        result = self.classify("factory_firmware/main/main.cpp")
+        self.assertTrue(result["factory_firmware"])
         self.assertEqual(result["esp_idf"]["mode"], "none")
         self.assertEqual(result["arduino"]["mode"], "none")
-        self.assertEqual(len(result["firmware_paths"]), 4)
-        self.assertEqual(result["release_artifact_paths"], [
-            "Firmware/factory.bin",
-            "Firmware/resources.zip",
-        ])
         self.assertFalse(result["docs_only"])
+
+        docs = self.classify("factory_firmware/README.md")
+        self.assertFalse(docs["factory_firmware"])
+        self.assertTrue(docs["docs_only"])
+
+        self.assertFalse(self.classify("examples/esp-idf/01_first/main/main.c")["factory_firmware"])
+        self.assertTrue(classify_changes.classify([], self.config, force_all=True)["factory_firmware"])
 
     def test_unknown_non_document_path_routes_all(self) -> None:
         result = self.classify("tooling/custom.build")

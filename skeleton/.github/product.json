@@ -9,5 +9,5 @@
     "core": "<X.Y.Z>",
     "fqbn": "<esp32:esp32:board:Option=value,...>"
   },
-  "factory_firmware": "https://github.com/waveshareteam/<PRODUCT-MODEL>/releases"
+  "factory_firmware": { "esp_idf": "<vX.Y.Z>" }
 }

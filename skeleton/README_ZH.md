@@ -40,7 +40,7 @@
 4. Windows 运行 `flash_combined.bat COMx`，Linux 运行 `./flash_combined.sh /dev/ttyACM0`。
 5. 如果开发板未自动重启，请手动复位。
 
-出厂固件（恢复开箱演示）：在 [Releases 页面](https://github.com/waveshareteam/<PRODUCT-MODEL>/releases)下载文件名带 `FactoryOnly` 的文件。
+出厂固件（恢复开箱演示）：在 [Releases 页面](https://github.com/waveshareteam/<PRODUCT-MODEL>/releases)下载文件名带 `factory_firmware` 的文件。
 
 ## 🧪 示例
 

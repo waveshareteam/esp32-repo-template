@@ -41,6 +41,8 @@ def _invalid_documents() -> dict[str, dict]:
         "no framework": without_frameworks,
         "unknown override": changed(overrides={"build": {}}),
         "relative product url": changed(product_url="www.waveshare.com"),
+        "factory firmware as a link": changed(factory_firmware="https://example.com/releases"),
+        "bad factory idf tag": changed(factory_firmware={"esp_idf": "5.5.5"}),
     }
 
 
@@ -106,6 +108,7 @@ class ProductConfigTests(unittest.TestCase):
         self.assertEqual(values["target"], VALID["target"])
         self.assertEqual(values["idf_versions"], "v5.5.5,v6.0.2")
         self.assertEqual(values["arduino_fqbn"], VALID["arduino"]["fqbn"])
+        self.assertEqual(values["factory_esp_idf"], "v5.5.5")
 
     @unittest.skipUnless(
         product_repo(),

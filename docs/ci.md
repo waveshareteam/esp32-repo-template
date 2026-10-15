@@ -5,13 +5,23 @@
 ## 产品仓库如何调用
 
 ```yaml
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
 jobs:
   build:
     uses: waveshareteam/esp32-repo-template/.github/workflows/build.yml@v1
     with:
       examples: ${{ inputs.examples || 'all' }}
+    permissions:
+      contents: write
     secrets: inherit
 ```
+
+完整文件见 [`skeleton/.github/workflows/build.yml`](../skeleton/.github/workflows/build.yml)。push 只在 `main` 和 `v*` 标签上触发，拉取请求由 `pull_request` 构建，同一次改动不会构建两遍。`contents: write` 只给打标签时创建草稿 Release 的任务使用，其他任务只读。
 
 | 输入 | 默认值 | 说明 |
 | --- | --- | --- |
@@ -38,25 +48,27 @@ jobs:
 - Arduino 草图是 `examples/arduino/examples/` 下包含顶层 `.ino` 文件的第一方目录。
 - `examples/arduino/libraries/**` 和本地组件自带的示例被排除。
 - `product.json` 没有 `esp_idf` 或 `arduino` 字段时，对应框架不构建。
+- 出厂固件是 `factory_firmware/` 这一个 ESP-IDF 工程，只在 `product.json` 有 `factory_firmware` 时构建，使用其中指定的那一个 ESP-IDF 版本。
 
 ## 构建矩阵
 
-矩阵大小 = ESP-IDF 工程数 × `esp_idf.versions` 的个数 + Arduino 草图数。
+矩阵大小 = ESP-IDF 工程数 × `esp_idf.versions` 的个数 + Arduino 草图数，有出厂固件时再加 1。
 
-完整工作流包含一个轻量的分类任务、两个发现任务，以及矩阵里的全部构建/打包任务。矩阵任务不启用快速失败（`fail-fast: false`），单个任务失败不会隐藏其他示例的结果。
+完整工作流包含一个轻量的分类任务、两个发现任务、矩阵里的全部构建/打包任务、出厂固件构建任务，以及只在 `v*` 标签上运行的草稿 Release 任务。矩阵任务不启用快速失败（`fail-fast: false`），单个任务失败不会隐藏其他示例的结果。
 
 ## 变更路由
 
-每个拉取请求和分支推送先运行分类任务。分类任务先校验 `product.json`，再用能识别重命名的分类器处理完整的 base/head 差异。差异不可用或为空时，分类任务直接失败，不会退化成「全部构建」或「全部跳过」。新分支的首次推送没有上一个提交可比，这时与默认分支比较。
+每个拉取请求和 `main` 推送先运行分类任务。分类任务先校验 `product.json`，再用能识别重命名的分类器处理完整的 base/head 差异。差异不可用或为空时，分类任务直接失败，不会退化成「全部构建」或「全部跳过」。新仓库的第一次推送没有上一个提交可比，这时构建全部。
 
 | 改动 | 结果 |
 | --- | --- |
 | Markdown、文档图片、LICENSE 等 | 不启动示例构建 |
 | 某个示例的源码或配置 | 只构建该示例 |
 | `examples/arduino/libraries/**` | 构建全部 Arduino 草图 |
+| `factory_firmware/**` | 只构建出厂固件 |
 | `.github/**`（含 `product.json` 和调用工作流） | 构建完整矩阵 |
 | 无法归类的非文档路径 | 构建完整矩阵，并在结果中列出 |
-| 手动触发、`v*` 标签 | 构建完整矩阵 |
+| 手动触发、`v*` 标签 | 构建完整矩阵和出厂固件；`v*` 标签再创建草稿 Release |
 
 ## 产物约定
 

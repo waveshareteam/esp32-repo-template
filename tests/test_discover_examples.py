@@ -130,6 +130,14 @@ class DiscoverExamplesTests(unittest.TestCase):
         for hardcoded in ("esp32s3", "v5.5", "v6.0", "3.3.11", "FlashSize"):
             self.assertNotIn(hardcoded, workflow, f"{hardcoded} must come from product.json")
 
+    def test_release_expects_every_example_package_plus_the_factory_firmware(self) -> None:
+        import prepare_release_assets
+
+        examples = len(IDF_NAMES) * len(PRODUCT["esp_idf"]["versions"]) + len(ARDUINO_SKETCHES)
+        self.assertEqual(prepare_release_assets.expected_asset_count(self.repo, PRODUCT), examples + 1)
+        without_factory = {key: value for key, value in PRODUCT.items() if key != "factory_firmware"}
+        self.assertEqual(prepare_release_assets.expected_asset_count(self.repo, without_factory), examples)
+
 
 if __name__ == "__main__":
     unittest.main()

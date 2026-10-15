@@ -71,8 +71,17 @@
       }
     },
     "factory_firmware": {
-      "description": "Where to download the factory firmware, preferably the repository Releases page so the link survives a firmware update. Large binaries are not committed to git.",
-      "type": "string"
+      "description": "Present when the factory firmware source is open and lives in factory_firmware/. CI builds it with this one ESP-IDF version and attaches it to the draft Release. Omit it when the factory firmware is uploaded to the Release by hand.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["esp_idf"],
+      "properties": {
+        "esp_idf": {
+          "description": "ESP-IDF release tag used to build factory_firmware/.",
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+        }
+      }
     },
     "overrides": {
       "description": "Per-product additions to the template defaults. Lists are appended to the default list; every other value replaces the default.",

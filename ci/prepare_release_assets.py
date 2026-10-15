@@ -17,10 +17,12 @@ from product_config import DEFAULT_PRODUCT_PATH, idf_versions, load_product
 
 
 def expected_asset_count(repo: Path, product: dict) -> int:
-    """One archive per ESP-IDF project and version, plus one per Arduino sketch."""
+    """One archive per ESP-IDF project and version, one per Arduino sketch, one factory firmware."""
     count = len(discover_esp_idf(repo)) * len(idf_versions(product))
     if product.get("arduino"):
         count += len(discover_arduino(repo))
+    if product.get("factory_firmware"):
+        count += 1
     return count
 
 

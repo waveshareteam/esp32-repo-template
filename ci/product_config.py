@@ -92,8 +92,14 @@ def validate(data: object) -> dict:
 
     if esp_idf is None and arduino is None:
         raise ProductConfigError("product.json must describe esp_idf, arduino, or both")
-    if "factory_firmware" in data and not isinstance(data["factory_firmware"], str):
-        raise ProductConfigError("factory_firmware must be a string")
+    factory = data.get("factory_firmware")
+    if factory is not None and (
+        not isinstance(factory, dict)
+        or set(factory) != {"esp_idf"}
+        or not isinstance(factory["esp_idf"], str)
+        or not IDF_VERSION_PATTERN.match(factory["esp_idf"])
+    ):
+        raise ProductConfigError("factory_firmware must be an object with only an esp_idf tag such as v5.5.5")
 
     overrides = data.get("overrides", {})
     if not isinstance(overrides, dict) or set(overrides) - set(OVERRIDE_DEFAULTS):
@@ -159,6 +165,7 @@ def main() -> int:
         "idf_versions": ",".join(idf_versions(product)),
         "arduino_core": arduino.get("core", ""),
         "arduino_fqbn": arduino.get("fqbn", ""),
+        "factory_esp_idf": product.get("factory_firmware", {}).get("esp_idf", ""),
     }
     if args.github_output:
         with open(args.github_output, "a", encoding="utf-8") as handle:

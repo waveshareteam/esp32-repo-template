@@ -16,7 +16,7 @@
 
 | 路径 | 内容 |
 | --- | --- |
-| `.github/workflows/build.yml` | 可复用工作流：变更分类、示例发现、矩阵构建、固件打包 |
+| `.github/workflows/build.yml` | 可复用工作流：变更分类、示例发现、矩阵构建、出厂固件构建、固件打包、打标签时创建草稿 Release |
 | `.github/workflows/self-test.yml` | 在本仓库运行 `tests/` |
 | `ci/` | 工作流和发布流程用到的 Python 脚本（只依赖标准库） |
 | `schema/product.schema.json` | `product.json` 的 JSON Schema |
@@ -47,7 +47,7 @@
    | `target` | ESP-IDF target，例如 `esp32s3` |
    | `esp_idf.versions` | 要构建的 ESP-IDF 版本标签；没有 ESP-IDF 示例时删除 `esp_idf` |
    | `arduino.core`、`arduino.fqbn` | Arduino-ESP32 版本和完整 FQBN；没有 Arduino 示例时删除 `arduino` |
-   | `factory_firmware` | 出厂固件的下载页面；建议填写仓库的 Releases 页面，更换固件时无需修改链接 |
+   | `factory_firmware.esp_idf` | 构建 `factory_firmware/` 出厂固件源码的 ESP-IDF 版本；出厂固件不开源时删除 `factory_firmware`，见[发布](docs/release.md#出厂固件) |
    | `overrides` | 可选，对 `defaults/` 的补充，见 [CI 文档](docs/ci.md#配置来源) |
 
 3. 按[目录规范](docs/spec.md#目录规范)整理示例和硬件资料，填写两份 README。
@@ -58,7 +58,7 @@
    PRODUCT_REPO=/path/to/product-repo python -m pytest tests/
    ```
 
-5. 推送到产品仓库。产品仓库的 `Build` 工作流随后按 `product.json` 构建全部示例并打包固件。
+5. 推送到产品仓库。产品仓库的 `Build` 工作流随后按 `product.json` 构建全部示例并打包固件。发布时打 `v*` 标签，流程见[发布](docs/release.md#发布流程)。
 
 ## 开发本仓库
 

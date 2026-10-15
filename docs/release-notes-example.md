@@ -55,7 +55,7 @@ The script flashes the combined image at `0x0`. Do not mix binaries from differe
 packages. If a monitor reports a checksum mismatch, reflash the complete package and use symbols from
 the same CI build.
 
-The factory recovery image under `Firmware/` is separate from these reproducible source builds.
+The factory firmware package is attached to this Release next to the example packages.
 
 ---
 
@@ -106,4 +106,4 @@ flash_combined.bat COMx
 脚本从偏移 `0x0` 烧录合并镜像。不要混用不同固件包中的二进制。如果监视器报告校验和
 不匹配，请重新烧录完整固件包，并使用同一 CI 构建中的符号文件。
 
-`Firmware/` 下的工厂恢复镜像与这些可复现的源码构建相互独立。
+出厂固件包与示例固件包一起附在本 Release 中。

@@ -25,14 +25,13 @@ from product_config import DEFAULT_PRODUCT_PATH, ProductConfigError, load_defaul
 IDF_ROOT = "examples/esp-idf/"
 ARDUINO_ROOT = "examples/arduino/examples/"
 ARDUINO_LIBRARIES = "examples/arduino/libraries/"
-FIRMWARE_ROOT = "Firmware/"
+FACTORY_ROOT = "factory_firmware/"
 GLOBAL_PREFIXES = (".github/",)
 CONFIG_KEYS = {
     "build_override_patterns",
     "documentation_patterns",
     "documentation_asset_patterns",
     "ignore_build_patterns",
-    "firmware_patterns",
     "esp_idf_shared_patterns",
     "arduino_shared_patterns",
     "esp_idf_global_patterns",
@@ -180,22 +179,11 @@ def classify(
     arduino: set[str] = set()
     idf_all = force_all
     arduino_all = force_all
-    firmware: list[str] = []
-    release_artifacts: list[str] = []
+    factory = force_all
     unknown: list[str] = []
     docs_only = bool(paths) and not force_all
 
     for path in paths:
-        lower = path.lower()
-        if path.startswith(FIRMWARE_ROOT) or _matches(
-            path, config.get("firmware_patterns", [])
-        ):
-            firmware.append(path)
-            if lower.endswith((".bin", ".zip", ".tar", ".tar.gz", ".tgz")):
-                release_artifacts.append(path)
-            if not _is_document(path, config):
-                docs_only = False
-            continue
         if _matches(path, config.get("build_override_patterns", [])):
             docs_only = False
             idf_all = True
@@ -228,6 +216,10 @@ def classify(
             docs_only = False
             arduino_all = True
             continue
+        if path.startswith(FACTORY_ROOT):
+            docs_only = False
+            factory = True
+            continue
         project = _project(path, IDF_ROOT)
         if project:
             docs_only = False
@@ -246,8 +238,7 @@ def classify(
     return {
         "esp_idf": _result("all" if idf_all else "selected" if idf else "none", idf),
         "arduino": _result("all" if arduino_all else "selected" if arduino else "none", arduino),
-        "firmware_paths": sorted(set(firmware)),
-        "release_artifact_paths": sorted(set(release_artifacts)),
+        "factory_firmware": factory,
         "unknown_paths": sorted(set(unknown)),
         "docs_only": docs_only,
     }
@@ -298,8 +289,7 @@ def main() -> int:
             handle.write(f"arduino_mode={result['arduino']['mode']}\n")
             handle.write(f"arduino_selector={','.join(result['arduino']['selectors']) or 'all'}\n")
             handle.write(f"docs_only={str(result['docs_only']).lower()}\n")
-            handle.write(f"firmware_changed={str(bool(result['firmware_paths'])).lower()}\n")
-            handle.write(f"release_review={str(bool(result['release_artifact_paths'])).lower()}\n")
+            handle.write(f"factory_firmware={str(result['factory_firmware']).lower()}\n")
     else:
         print(output)
     return 0
