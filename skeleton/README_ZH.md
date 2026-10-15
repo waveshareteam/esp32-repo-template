@@ -14,7 +14,7 @@
     <a href="examples/arduino/examples/">🔧 Arduino</a> &middot;
     <a href="hardware/">📚 文档</a>
   </p>
-  <p><img src="docs/images/<product-model>.jpg" alt="<PRODUCT-MODEL> 开发板"></p>
+  <p><img src="docs/images/<product-model>.jpg" alt="<PRODUCT-MODEL> 开发板" width="500"></p>
 </div>
 
 ---

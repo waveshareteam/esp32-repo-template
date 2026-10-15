@@ -11,7 +11,7 @@ from support import DEFAULTS, PRODUCT_REPO_ENV, SKELETON, product_repo
 
 
 HOMEPAGES = ("README.md", "README_ZH.md")
-HERO_IMAGE = re.compile(r'<img src="(docs/images/[^"]+)" alt="([^"]+)">')
+HERO_IMAGE = re.compile(r'<img src="(docs/images/[^"]+)" alt="([^"]+)" width="500">')
 H2 = re.compile(r"^## (\S+) ", re.MULTILINE)
 QUICK_LINK_ICONS = {
     "product": "🌐",
