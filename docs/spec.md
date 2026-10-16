@@ -108,3 +108,15 @@
 | 📄 许可证 | 一行 |
 
 不写仓库结构表、CI 任务数、矩阵说明和维护者文档链接。章节图标和快捷链接由 [`defaults/markdown-audit.json`](../defaults/markdown-audit.json) 约束，`tests/test_homepage_contract.py` 会检查骨架 README 是否符合。
+
+## GitHub 仓库信息
+
+仓库页面 About 栏的三项与 README 和 `product.json` 保持一致：
+
+| 字段 | 内容 |
+| --- | --- |
+| Description | `Waveshare <README 头部的一句话描述>: <框架> examples, firmware and hardware resources`，`<框架>` 按 `product.json` 写 `ESP-IDF and Arduino`、`ESP-IDF` 或 `Arduino` |
+| Website | `product.json` 的 `product_url` |
+| Topics | `waveshare`、`esp32`、芯片（`target` 加连字符，如 `esp32-s3`）、型号（仓库名转小写，`.` 换成 `-`，如 `esp32-s3-touch-amoled-2-06`），以及 `product.json` 中有的 `esp-idf`、`arduino` |
+
+例如 `ESP32-S3-Touch-AMOLED-2.06` 的 Description 是 `Waveshare ESP32-S3 2.06-inch 410 x 502 QSPI AMOLED touch development board: ESP-IDF and Arduino examples, firmware and hardware resources`。
