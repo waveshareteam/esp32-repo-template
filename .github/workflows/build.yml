@@ -42,7 +42,6 @@ jobs:
   classify-changes:
     runs-on: ubuntu-latest
     outputs:
-      routing: ${{ steps.classify.outputs.routing }}
       idf_mode: ${{ steps.classify.outputs.idf_mode }}
       idf_selector: ${{ steps.classify.outputs.idf_selector }}
       arduino_mode: ${{ steps.classify.outputs.arduino_mode }}
