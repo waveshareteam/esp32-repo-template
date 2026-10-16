@@ -70,12 +70,12 @@
 
 - [原理图](hardware/)
 - [产品页](https://www.waveshare.com/<product-page>.htm)
-- [Wiki](<Wiki 地址>)
+- [Wiki](https://docs.waveshare.net/<PRODUCT-MODEL>/)
 
 ## 🤝 支持
 
-- 示例或仓库问题：[提交 issue](https://github.com/waveshareteam/<PRODUCT-MODEL>/issues/new/choose)。
-- 产品使用、硬件或订单问题：[Waveshare 官方支持](https://service.waveshare.com/)。
+- 示例或仓库问题：[提交 issue](https://gitee.com/waveshare/<PRODUCT-MODEL>/issues)。
+- 产品使用、硬件或订单问题：[微雪技术支持](https://docs.waveshare.net/<PRODUCT-MODEL>/Technical-Support/)。
 
 ## 📄 许可证
 

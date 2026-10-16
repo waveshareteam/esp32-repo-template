@@ -103,8 +103,8 @@
 | 📦 快速开始 | 下载合并固件包并烧录，5 步以内；出厂固件一行 |
 | 🧪 示例 | 每个框架一张表，每一项链接到示例目录 |
 | 🛠️ 开发环境 | 版本表：框架、版本、示例数 |
-| 📚 资料 | 原理图、产品页、Wiki |
-| 🤝 支持 | issue 和官方支持的链接 |
+| 📚 资料 | 原理图、产品页、Wiki；`README_ZH.md` 的 Wiki 用中文站 `https://docs.waveshare.net/<产品名>/` |
+| 🤝 支持 | issue 和官方支持的链接；`README_ZH.md` 的 issue 指向 Gitee 镜像 `https://gitee.com/waveshare/<产品名>/issues`，没有 Gitee 镜像时删掉这一行，技术支持指向 `https://docs.waveshare.net/<产品名>/Technical-Support/` |
 | 📄 许可证 | 一行 |
 
 不写仓库结构表、CI 任务数、矩阵说明和维护者文档链接。章节图标和快捷链接由 [`defaults/markdown-audit.json`](../defaults/markdown-audit.json) 约束，`tests/test_homepage_contract.py` 会检查骨架 README 是否符合。
