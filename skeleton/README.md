@@ -26,6 +26,7 @@
 | Feature | Device / interface |
 | --- | --- |
 | MCU | <chip> |
+| Memory | <N> MB Flash, <N> MB PSRAM |
 | Display | <size, resolution, interface, controller> |
 | Touch | <controller, interface> |
 | Board support | Managed component: `<namespace/component>` |
