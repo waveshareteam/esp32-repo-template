@@ -130,13 +130,17 @@ class DiscoverExamplesTests(unittest.TestCase):
         for hardcoded in ("esp32s3", "v5.5", "v6.0", "3.3.11", "FlashSize"):
             self.assertNotIn(hardcoded, workflow, f"{hardcoded} must come from product.json")
 
-    def test_release_expects_every_example_package_plus_the_factory_firmware(self) -> None:
+    def test_release_expects_one_archive_per_example_and_none_for_the_factory_firmware(self) -> None:
         import prepare_release_assets
 
         examples = len(IDF_NAMES) * len(PRODUCT["esp_idf"]["versions"]) + len(ARDUINO_SKETCHES)
-        self.assertEqual(prepare_release_assets.expected_asset_count(self.repo, PRODUCT), examples + 1)
-        without_factory = {key: value for key, value in PRODUCT.items() if key != "factory_firmware"}
-        self.assertEqual(prepare_release_assets.expected_asset_count(self.repo, without_factory), examples)
+        self.assertIn("factory_firmware", PRODUCT)
+        self.assertEqual(prepare_release_assets.expected_asset_count(self.repo, PRODUCT), examples)
+
+    def test_workflow_publishes_the_factory_firmware_as_a_factoryonly_bin(self) -> None:
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn('"release-artifacts/${PRODUCT}_FactoryOnly.bin"', workflow)
+        self.assertIn("release-downloads/*_FactoryOnly.bin", workflow)
 
 
 if __name__ == "__main__":
