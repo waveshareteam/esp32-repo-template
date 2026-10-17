@@ -68,7 +68,8 @@
 
 ## 📚 资料
 
-- [原理图](hardware/)
+- [原理图](hardware/schematic/)
+- [机械资料（尺寸图和 3D 模型）](hardware/mechanical/)
 - [产品页](https://www.waveshare.com/<product-page>.htm)
 - [Wiki](https://docs.waveshare.net/<PRODUCT-MODEL>/)
 
