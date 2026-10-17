@@ -69,7 +69,8 @@ Libraries used by the sketches are bundled in [`examples/arduino/libraries`](exa
 
 ## 📚 Resources
 
-- [Schematic](hardware/)
+- [Schematic](hardware/schematic/)
+- [Mechanical drawings and 3D model](hardware/mechanical/)
 - [Product page](https://www.waveshare.com/<product-page>.htm)
 - [Wiki](<wiki URL>)
 

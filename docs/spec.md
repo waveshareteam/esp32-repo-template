@@ -20,7 +20,9 @@
 │           ├── lv_conf.h
 │           └── <第三方库>/        # 只保留编译所需文件 + LICENSE
 ├── factory_firmware/              # 可选，开源的出厂固件源码（一个 ESP-IDF 工程）
-├── hardware/                      # 原理图等硬件资料
+├── hardware/
+│   ├── schematic/                 # 原理图 PDF
+│   └── mechanical/                # 可选，2D 尺寸图（PDF、DXF）和 3D 模型（STEP）
 ├── docs/images/                   # README 用到的图片
 ├── README.md
 ├── README_ZH.md
@@ -36,6 +38,7 @@
 - 每个示例都必须能用 `product.json` 列出的全部框架版本编译。
 - `examples/arduino/libraries/` 是所有草图共用的一套库，同一个库只放一个版本（例如只放一个 LVGL）。
 - 出厂固件源码开源时放在 `factory_firmware/`，并在 `product.json` 写 `factory_firmware.esp_idf`；不开源时不建这个目录，固件在发布时手动上传。见[发布](release.md#出厂固件)。
+- 硬件资料只放这两个子目录，有内容才建。文件名带产品名和版本，例如 `<产品名>-Schematic-V1.0.pdf`、`<产品名>-3D-V1.0.step`。原理图和 PCB 的源文件不放进产品仓库。
 - 第一方 Markdown 提供英文主文件和 `_ZH.md` 简体中文版，两者顶部互相链接。第三方库和上游组件自带的文档保持原样，不翻译、不改名。
 - 构建产物、下载的 CI 产物和大体积二进制文件（包括出厂固件）不提交到 Git。
 - `.gitmodules`、`.gitattributes`、`.gitkeep` 必须被跟踪，不要写进 `.gitignore`。
@@ -103,7 +106,7 @@
 | 📦 快速开始 | 下载合并固件包并烧录，5 步以内；出厂固件一行 |
 | 🧪 示例 | 每个框架一张表，每一项链接到示例目录 |
 | 🛠️ 开发环境 | 版本表：框架、版本、示例数 |
-| 📚 资料 | 原理图、产品页、Wiki；`README_ZH.md` 的 Wiki 用中文站 `https://docs.waveshare.net/<产品名>/` |
+| 📚 资料 | 原理图、机械资料（有 `hardware/mechanical/` 时）、产品页、Wiki；`README_ZH.md` 的 Wiki 用中文站 `https://docs.waveshare.net/<产品名>/` |
 | 🤝 支持 | issue 和官方支持的链接；`README_ZH.md` 的 issue 指向 Gitee 镜像 `https://gitee.com/waveshare/<产品名>/issues`，没有 Gitee 镜像时删掉这一行，技术支持指向 `https://docs.waveshare.net/<产品名>/Technical-Support/` |
 | 📄 许可证 | 一行 |
 
