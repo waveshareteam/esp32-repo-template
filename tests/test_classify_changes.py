@@ -189,6 +189,15 @@ class ClassifyChangesTests(unittest.TestCase):
         )
         self.assertNotIn("--config", workflow)
 
+    def test_only_new_branch_pushes_force_a_full_build(self) -> None:
+        # pull_request has no `before`; null == '000...0' is true in GitHub expressions.
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn(
+            "FORCE_ALL: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') "
+            "|| (github.event_name == 'push' && github.event.before == '0000000000000000000000000000000000000000') }}",
+            workflow,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
