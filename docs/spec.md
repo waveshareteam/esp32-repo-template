@@ -20,7 +20,7 @@
 │           ├── lv_conf.h
 │           └── <第三方库>/        # 只保留编译所需文件 + LICENSE
 ├── firmware/                      # 可选，实测过、可直接烧录的固件
-│   ├── README.md / README_ZH.md   # 每个固件一行：用途、版本、烧录地址、测试日期
+│   ├── README.md / README_ZH.md   # 每个固件一行：文件名和用途
 │   ├── <PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin
 │   └── sourcecode/                # 可选，开源的出厂固件源码（一个 ESP-IDF 工程）
 ├── hardware/

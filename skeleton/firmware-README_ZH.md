@@ -4,9 +4,9 @@
 
 在 <PRODUCT-MODEL> 开发板上实测过、可直接烧录的固件。每个文件都是从 `0x0` 烧录的合并镜像，文件名中的日期即版本。
 
-| 文件 | 用途 | 测试日期 |
-| --- | --- | --- |
-| `<PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin` | 出厂固件，恢复开箱演示 | <YYYY-MM-DD> |
+| 文件 | 用途 |
+| --- | --- |
+| `<PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin` | 出厂固件，恢复开箱演示 |
 
 用 esptool 烧录：
 

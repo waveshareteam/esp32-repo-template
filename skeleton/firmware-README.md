@@ -4,9 +4,9 @@
 
 Ready-to-flash firmware tested on the <PRODUCT-MODEL> board. Each file is a merged image flashed at `0x0`; the date in the file name is its version.
 
-| File | Purpose | Tested on |
-| --- | --- | --- |
-| `<PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin` | Factory firmware, restores the out-of-box demo | <YYYY-MM-DD> |
+| File | Purpose |
+| --- | --- |
+| `<PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin` | Factory firmware, restores the out-of-box demo |
 
 Flash with esptool:
 

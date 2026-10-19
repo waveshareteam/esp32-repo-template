@@ -17,7 +17,7 @@
 
 - 文件名为 `<产品名>_<固件名>_<YYYYMMDD>.bin`，日期即版本。出厂固件的固件名是 `FactoryOnly`，例如 `ESP32-S3-Touch-AMOLED-2.06_FactoryOnly_20261019.bin`。
 - 每种固件只保留最新的一个，更新时删除旧文件。
-- `firmware/README.md` 和 `README_ZH.md` 每个文件一行：用途、版本、烧录地址、测试日期。
+- `firmware/README.md` 和 `README_ZH.md` 每个文件一行：文件名和用途。
 - 提交前在实物上整片擦除后从 `0x0` 烧录验证。
 
 固件下载页面从产品仓库的 `firmware/` 同步文件名匹配 `*_factoryonly*.bin` 的文件，所以出厂固件只能有一个。
