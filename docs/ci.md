@@ -72,7 +72,7 @@ jobs:
 
 ## 产物约定
 
-每个成功构建上传一个 `*-combined.zip`，格式见[发布](release.md#固件包格式)。
+每个成功构建上传一个 `*-combined.zip`，格式见[发布](release.md#固件包格式)。出厂固件任务上传 `factory-firmware` 产物，里面是合并镜像 `<产品名>_FactoryOnly.bin`，见[出厂固件](release.md#出厂固件)。
 
 ## 版本策略
 
