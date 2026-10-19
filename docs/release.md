@@ -15,7 +15,7 @@
 
 `firmware/` 里的每个文件都是从 `0x0` 烧录的单个合并 BIN，不打包成 ZIP：
 
-- 文件名为 `<产品名>_<固件名>_<YYYYMMDD>.bin`，日期即版本。出厂固件的固件名是 `FactoryOnly`，例如 `ESP32-S3-Touch-AMOLED-2.06_FactoryOnly_20261019.bin`。
+- 文件名为 `<产品名>_<固件名>_<YYYYMMDD>.bin`，日期即版本。出厂固件的固件名是 `FactoryOnly`，例如 `ESP32-S3-Touch-AMOLED-2.06_FactoryOnly_20261019.bin`。其他实测固件（如小智 AI）按同样格式命名，固件名用说明用途的英文词，例如 `<产品名>_XiaoZhi_<YYYYMMDD>.bin`；它们不同步到固件下载页面。
 - 每种固件只保留最新的一个，更新时删除旧文件。
 - `firmware/README.md` 和 `README_ZH.md` 每个文件一行：文件名和用途。
 - 提交前在实物上整片擦除后从 `0x0` 烧录验证。
