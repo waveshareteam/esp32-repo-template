@@ -19,7 +19,10 @@
 │           ├── board_config/      # 板级配置，如 pin_config.h
 │           ├── lv_conf.h
 │           └── <第三方库>/        # 只保留编译所需文件 + LICENSE
-├── factory_firmware/              # 可选，开源的出厂固件源码（一个 ESP-IDF 工程）
+├── firmware/                      # 可选，实测过、可直接烧录的固件
+│   ├── README.md / README_ZH.md   # 每个固件一行：文件名和用途
+│   ├── <PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin
+│   └── sourcecode/                # 可选，开源的出厂固件源码（一个 ESP-IDF 工程）
 ├── hardware/
 │   ├── schematic/                 # 原理图 PDF
 │   └── mechanical/                # 可选，2D 尺寸图（PDF、DXF）和 3D 模型（STEP）
@@ -37,7 +40,8 @@
 - 示例目录不带框架版本号（不用 `ESP-IDF-v5.5/` 这类名字），版本只写在 `product.json`。
 - 每个示例都必须能用 `product.json` 列出的全部框架版本编译。
 - `examples/arduino/libraries/` 是所有草图共用的一套库，同一个库只放一个版本（例如只放一个 LVGL）。
-- 出厂固件源码开源时放在 `factory_firmware/`，并在 `product.json` 写 `factory_firmware.esp_idf`；不开源时不建这个目录，固件在发布时手动上传。见[发布](release.md#出厂固件)。
+- `firmware/` 放维护者在实物上测试过的合并镜像，供用户不搭环境直接烧录、对比。见[发布](release.md#出厂固件)。
+- 出厂固件源码开源时放在 `firmware/sourcecode/`，并在 `product.json` 写 `factory_firmware.esp_idf`；不开源时不建这个目录。
 - 硬件资料只放这两个子目录，有内容才建。文件名带产品名和版本，例如 `<产品名>-Schematic-V1.0.pdf`、`<产品名>-3D-V1.0.step`。原理图和 PCB 的源文件不放进产品仓库。
 - 第一方 Markdown 提供英文主文件和 `_ZH.md` 简体中文版，两者顶部互相链接。第三方库和上游组件自带的文档保持原样，不翻译、不改名。
 - 构建产物、下载的 CI 产物和大体积二进制文件（包括出厂固件）不提交到 Git。

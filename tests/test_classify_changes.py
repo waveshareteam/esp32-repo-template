@@ -72,18 +72,25 @@ class ClassifyChangesTests(unittest.TestCase):
             self.assertEqual(global_result["arduino"]["mode"], "all", path)
 
     def test_factory_firmware_source_builds_only_the_factory_firmware(self) -> None:
-        result = self.classify("factory_firmware/main/main.cpp")
+        result = self.classify("firmware/sourcecode/main/main.cpp")
         self.assertTrue(result["factory_firmware"])
         self.assertEqual(result["esp_idf"]["mode"], "none")
         self.assertEqual(result["arduino"]["mode"], "none")
         self.assertFalse(result["docs_only"])
 
-        docs = self.classify("factory_firmware/README.md")
+        docs = self.classify("firmware/sourcecode/README.md")
         self.assertFalse(docs["factory_firmware"])
         self.assertTrue(docs["docs_only"])
 
         self.assertFalse(self.classify("examples/esp-idf/01_first/main/main.c")["factory_firmware"])
         self.assertTrue(classify_changes.classify([], self.config, force_all=True)["factory_firmware"])
+
+    def test_committed_firmware_images_build_nothing(self) -> None:
+        result = self.classify("firmware/ESP32-S3-Touch-AMOLED-2.06_FactoryOnly_20261019.bin")
+        self.assertFalse(result["factory_firmware"])
+        self.assertEqual(result["esp_idf"]["mode"], "none")
+        self.assertEqual(result["arduino"]["mode"], "none")
+        self.assertTrue(result["docs_only"])
 
     def test_unknown_non_document_path_routes_all(self) -> None:
         result = self.classify("tooling/custom.build")

@@ -35,6 +35,7 @@
    | `skeleton/.github/product.json` | `.github/product.json` |
    | `skeleton/README.md`、`skeleton/README_ZH.md` | 仓库根目录 |
    | `skeleton/example-README.md`、`skeleton/example-README_ZH.md` | 每个示例目录，改名为 `README.md`、`README_ZH.md` |
+   | `skeleton/firmware-README.md`、`skeleton/firmware-README_ZH.md` | `firmware/`，改名为 `README.md`、`README_ZH.md`；没有实测固件时不建 `firmware/` |
    | `skeleton/.gitignore` | 仓库根目录 |
 
 2. 填写 `.github/product.json`，把所有 `<...>` 占位符换成实际值：
@@ -47,7 +48,7 @@
    | `target` | ESP-IDF target，例如 `esp32s3` |
    | `esp_idf.versions` | 要构建的 ESP-IDF 版本标签；没有 ESP-IDF 示例时删除 `esp_idf` |
    | `arduino.core`、`arduino.fqbn` | Arduino-ESP32 版本和完整 FQBN；没有 Arduino 示例时删除 `arduino` |
-   | `factory_firmware.esp_idf` | 构建 `factory_firmware/` 出厂固件源码的 ESP-IDF 版本；出厂固件不开源时删除 `factory_firmware`，见[发布](docs/release.md#出厂固件) |
+   | `factory_firmware.esp_idf` | 构建 `firmware/sourcecode/` 出厂固件源码的 ESP-IDF 版本；出厂固件不开源时删除 `factory_firmware`，见[发布](docs/release.md#出厂固件) |
    | `overrides` | 可选，对 `defaults/` 的补充，见 [CI 文档](docs/ci.md#配置来源) |
 
 3. 按[目录规范](docs/spec.md#目录规范)整理示例和硬件资料，填写两份 README。

@@ -16,6 +16,7 @@
     "docs/**/*.webp"
   ],
   "ignore_build_patterns": [
+    "firmware/*.bin",
     ".github/ISSUE_TEMPLATE/**",
     ".github/CODEOWNERS",
     ".github/FUNDING.yml",
