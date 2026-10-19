@@ -85,6 +85,12 @@ class ClassifyChangesTests(unittest.TestCase):
         self.assertFalse(self.classify("examples/esp-idf/01_first/main/main.c")["factory_firmware"])
         self.assertTrue(classify_changes.classify([], self.config, force_all=True)["factory_firmware"])
 
+    def test_global_inputs_also_build_the_factory_firmware(self) -> None:
+        for path in (".github/product.json", ".github/workflows/build.yml", "scripts/flash.py"):
+            self.assertTrue(self.classify(path)["factory_firmware"], path)
+        self.assertFalse(self.classify(".github/ISSUE_TEMPLATE/config.yml")["factory_firmware"])
+        self.assertFalse(self.classify("tooling/custom.build")["factory_firmware"])
+
     def test_committed_firmware_images_build_nothing(self) -> None:
         result = self.classify("firmware/ESP32-S3-Touch-AMOLED-2.06_FactoryOnly_20261019.bin")
         self.assertFalse(result["factory_firmware"])
