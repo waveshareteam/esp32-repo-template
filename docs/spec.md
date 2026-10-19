@@ -44,7 +44,7 @@
 - 出厂固件源码开源时放在 `firmware/sourcecode/`，并在 `product.json` 写 `factory_firmware.esp_idf`；不开源时不建这个目录。
 - 硬件资料只放这两个子目录，有内容才建。文件名带产品名和版本，例如 `<产品名>-Schematic-V1.0.pdf`、`<产品名>-3D-V1.0.step`。原理图和 PCB 的源文件不放进产品仓库。
 - 第一方 Markdown 提供英文主文件和 `_ZH.md` 简体中文版，两者顶部互相链接。第三方库和上游组件自带的文档保持原样，不翻译、不改名。
-- 构建产物、下载的 CI 产物和大体积二进制文件（包括出厂固件）不提交到 Git。
+- 构建产物、下载的 CI 产物和大体积二进制文件不提交到 Git，`firmware/` 中实测过的固件除外。
 - `.gitmodules`、`.gitattributes`、`.gitkeep` 必须被跟踪，不要写进 `.gitignore`。
 - `.claude/`、`.cursor/`、`.codex/` 等 AI 编码代理的本地目录必须写进 `.gitignore`，不得提交。
 
@@ -56,7 +56,7 @@
 
 | 级别 | `tier` | 要求 |
 | --- | :---: | --- |
-| L0 卫生 | 0 | README 符合模板、有 LICENSE、`.gitignore` 正确、不提交构建产物和大体积二进制文件、第三方库只保留编译所需文件和 LICENSE |
+| L0 卫生 | 0 | README 符合模板、有 LICENSE、`.gitignore` 正确、不提交构建产物和大体积二进制文件（`firmware/` 除外）、第三方库只保留编译所需文件和 LICENSE |
 | L1 构建 | 1 | L0 + `product.json` + `build.yml`，所有示例 CI 编译通过，每个示例有 README |
 | L2 发布 | 2 | L1 + 用 `v*` 标签发布：CI 生成的草稿 Release 经审阅后发布，版本说明写在 GitHub Release 里 |
 
