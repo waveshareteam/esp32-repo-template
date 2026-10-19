@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-Ready-to-flash firmware tested on the <PRODUCT-MODEL> board. Each file is a merged image flashed at `0x0`; the date in the file name is its version.
+Ready-to-flash firmware tested on the <PRODUCT-MODEL> board. Each file is a merged image flashed at `0x0`; the date (or upstream version) in the file name is its version.
 
 | File | Purpose |
 | --- | --- |
