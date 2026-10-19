@@ -71,13 +71,13 @@
       }
     },
     "factory_firmware": {
-      "description": "Present when the factory firmware source is open and lives in factory_firmware/. CI builds it with this one ESP-IDF version and attaches it to the draft Release. Omit it when the factory firmware is uploaded to the Release by hand.",
+      "description": "Present when the factory firmware source is open and lives in firmware/sourcecode/. CI builds it with this one ESP-IDF version. Omit it when the source is closed.",
       "type": "object",
       "additionalProperties": false,
       "required": ["esp_idf"],
       "properties": {
         "esp_idf": {
-          "description": "ESP-IDF release tag used to build factory_firmware/.",
+          "description": "ESP-IDF release tag used to build firmware/sourcecode/.",
           "type": "string",
           "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
         }

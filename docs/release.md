@@ -7,20 +7,27 @@
 | 类型 | 来源 | 存放位置 |
 | --- | --- | --- |
 | 示例固件 | CI 从 `examples/` 的源码构建 | GitHub Release 资产 |
-| 出厂固件 | 开源时 CI 从 `factory_firmware/` 构建；不开源时由维护者手动上传 | GitHub Release 资产 |
+| 出厂固件等实测固件 | 维护者在实物上测试后提交 | 产品仓库的 `firmware/` |
 
-固件二进制一律不提交到 Git。产品 README 中的出厂固件链接指向仓库的 Releases 页面，更换固件时不用改链接。
+除 `firmware/` 外，固件二进制不提交到 Git。产品 README 中的出厂固件链接指向 `firmware/` 目录，更换固件时不用改链接。
 
 ## 出厂固件
 
-| 情况 | 产品仓库 | 发布时 |
-| --- | --- | --- |
-| 源码开源 | 源码放在 `factory_firmware/`（一个 ESP-IDF 工程），`product.json` 写 `"factory_firmware": { "esp_idf": "v5.5.5" }` | CI 用这个版本构建，合并镜像 `<产品名>_FactoryOnly.bin` 自动附在草稿 Release 上 |
-| 源码不开源 | 没有 `factory_firmware/`，`product.json` 不写 `factory_firmware` | 维护者把从 `0x0` 烧录的合并镜像命名为 `<产品名>_FactoryOnly.bin`，上传到草稿 Release |
+`firmware/` 里的每个文件都是从 `0x0` 烧录的单个合并 BIN，不打包成 ZIP：
+
+- 文件名为 `<产品名>_<固件名>_<YYYYMMDD>.bin`，日期即版本。出厂固件的固件名是 `FactoryOnly`，例如 `ESP32-S3-Touch-AMOLED-2.06_FactoryOnly_20261019.bin`。
+- 每种固件只保留最新的一个，更新时删除旧文件。
+- `firmware/README.md` 和 `README_ZH.md` 每个文件一行：用途、版本、烧录地址、测试日期。
+- 提交前在实物上整片擦除后从 `0x0` 烧录验证。
+
+固件下载页面从产品仓库的 `firmware/` 同步文件名匹配 `*_factoryonly*.bin` 的文件，所以出厂固件只能有一个。
+
+| 情况 | 产品仓库 |
+| --- | --- |
+| 源码开源 | 源码放在 `firmware/sourcecode/`（一个 ESP-IDF 工程），`product.json` 写 `"factory_firmware": { "esp_idf": "v5.5.5" }`。CI 用这个版本编译，合并镜像 `<产品名>_FactoryOnly.bin` 作为 `factory-firmware` 产物上传，维护者下载后实测、改名提交到 `firmware/` |
+| 源码不开源 | 没有 `firmware/sourcecode/`，`product.json` 不写 `factory_firmware`，维护者直接提交合并镜像 |
 
 出厂固件只用一个 ESP-IDF 版本构建，不跟随 `esp_idf.versions`。
-
-出厂固件是单个合并 BIN，不打包成 ZIP：固件下载页面从每个产品最新的 Release 同步文件名匹配 `*_factoryonly*.bin` 的附件，每个 Release 只能有一个，ZIP 不会被识别。发布前在实物上整片擦除后从 `0x0` 烧录验证。
 
 ## 固件包格式
 
@@ -48,8 +55,8 @@ ESP-IDF 的偏移和 esptool 参数来自 `flasher_args.json`。Arduino 优先�
 
 1. 改动通过拉取请求合并到 `main`，按变更范围选中的构建全部成功；需要硬件验证的改动已验证。
 2. 在合并后的提交上打 `v*` 标签并推送，例如 `git tag v1.0.2 && git push origin v1.0.2`。
-3. 标签触发完整构建：全部示例和出厂固件（开源时）。全部成功后，CI 用 `ci/prepare_release_assets.py` 核对固件包的数量、合并镜像、校验和与 Git SHA，再创建同名的**草稿** Release，附上全部示例 ZIP、`manifest-combined-assets.json`，以及开源出厂固件的 `<产品名>_FactoryOnly.bin`。
-4. 维护者打开草稿：确认恰好有一个 `<产品名>_FactoryOnly.bin`（不开源时手动上传）；按[版本说明](#版本说明)补写正文；然后发布。
+3. 标签触发完整构建：全部示例和出厂固件（开源时）。全部成功后，CI 用 `ci/prepare_release_assets.py` 核对固件包的数量、合并镜像、校验和与 Git SHA，再创建同名的**草稿** Release，附上全部示例 ZIP 和 `manifest-combined-assets.json`。
+4. 维护者打开草稿，按[版本说明](#版本说明)补写正文，然后发布。
 
 任何构建失败或核对不通过时不会创建草稿 Release。偶发失败可在 Actions 页面重新运行失败的任务；需要改代码时，合并修复后打新的标签。发布固件必须来自标签触发的 CI，本地构建的固件不能作为发布内容。
 

@@ -267,20 +267,20 @@ jobs:
           repository: ${{ inputs.template_repository }}
           ref: ${{ inputs.template_ref }}
           path: ${{ env.TEMPLATE_DIR }}
-      - name: Build factory_firmware with ESP-IDF ${{ env.IDF_VERSION }}
+      - name: Build the factory firmware with ESP-IDF ${{ env.IDF_VERSION }}
         shell: bash
         run: |
           . "$IDF_PATH/export.sh"
           idf.py --version
-          idf.py -C factory_firmware -B build/factory_firmware set-target "$TARGET" build
-      # The factory firmware is published as one merged image flashed at 0x0, named
-      # <product>_FactoryOnly.bin, the asset the firmware download page syncs from Releases.
+          idf.py -C firmware/sourcecode -B build/factory_firmware set-target "$TARGET" build
+      # The merged image is a workflow artifact for maintainers to test on hardware. The
+      # tested image is committed to firmware/ by hand; it is not attached to Releases.
       - name: Merge the factory firmware image
         shell: bash
         run: |
           python3 "$TEMPLATE_DIR/ci/package_firmware.py" \
             --framework esp-idf \
-            --project factory_firmware \
+            --project firmware/sourcecode \
             --build-dir build/factory_firmware \
             --name factory_firmware \
             --framework-version "$IDF_VERSION" \
@@ -291,13 +291,12 @@ jobs:
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
         with:
-          name: firmware-factory_firmware
+          name: factory-firmware
           path: release-artifacts/${{ env.PRODUCT }}_FactoryOnly.bin
           if-no-files-found: error
 
-  # A v* tag ends in a draft Release holding every example package and, for an open factory
-  # firmware, <product>_FactoryOnly.bin. A maintainer reviews it, uploads a closed-source
-  # <product>_FactoryOnly.bin by hand if the product has one, and publishes it.
+  # A v* tag ends in a draft Release holding every example package. A maintainer reviews it
+  # and publishes it. Factory firmware lives in firmware/, not in Releases.
   draft-release:
     needs: [classify-changes, build-esp-idf, build-arduino, build-factory-firmware]
     if: always() && startsWith(github.ref, 'refs/tags/v') && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
@@ -328,6 +327,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          shopt -s nullglob
-          gh release create "$GITHUB_REF_NAME" release-dist/* release-downloads/*_FactoryOnly.bin \
+          gh release create "$GITHUB_REF_NAME" release-dist/* \
             --draft --verify-tag --title "$GITHUB_REF_NAME" --generate-notes

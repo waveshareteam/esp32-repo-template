@@ -55,8 +55,6 @@ The script flashes the combined image at `0x0`. Do not mix binaries from differe
 packages. If a monitor reports a checksum mismatch, reflash the complete package and use symbols from
 the same CI build.
 
-The factory firmware package is attached to this Release next to the example packages.
-
 ---
 
 ## ESP32-S3-Touch-AMOLED-1.75C v1.0.1

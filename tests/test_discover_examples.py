@@ -137,10 +137,11 @@ class DiscoverExamplesTests(unittest.TestCase):
         self.assertIn("factory_firmware", PRODUCT)
         self.assertEqual(prepare_release_assets.expected_asset_count(self.repo, PRODUCT), examples)
 
-    def test_workflow_publishes_the_factory_firmware_as_a_factoryonly_bin(self) -> None:
+    def test_workflow_builds_the_factory_firmware_but_keeps_it_out_of_releases(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("idf.py -C firmware/sourcecode", workflow)
         self.assertIn('"release-artifacts/${PRODUCT}_FactoryOnly.bin"', workflow)
-        self.assertIn("release-downloads/*_FactoryOnly.bin", workflow)
+        self.assertNotIn("release-downloads/*_FactoryOnly.bin", workflow)
 
 
 if __name__ == "__main__":
