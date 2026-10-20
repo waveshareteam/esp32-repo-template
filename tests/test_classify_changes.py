@@ -72,13 +72,13 @@ class ClassifyChangesTests(unittest.TestCase):
             self.assertEqual(global_result["arduino"]["mode"], "all", path)
 
     def test_factory_firmware_source_builds_only_the_factory_firmware(self) -> None:
-        result = self.classify("firmware/sourcecode/main/main.cpp")
+        result = self.classify("examples/factory/main/main.cpp")
         self.assertTrue(result["factory_firmware"])
         self.assertEqual(result["esp_idf"]["mode"], "none")
         self.assertEqual(result["arduino"]["mode"], "none")
         self.assertFalse(result["docs_only"])
 
-        docs = self.classify("firmware/sourcecode/README.md")
+        docs = self.classify("examples/factory/README.md")
         self.assertFalse(docs["factory_firmware"])
         self.assertTrue(docs["docs_only"])
 

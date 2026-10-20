@@ -272,7 +272,7 @@ jobs:
         run: |
           . "$IDF_PATH/export.sh"
           idf.py --version
-          idf.py -C firmware/sourcecode -B build/factory_firmware set-target "$TARGET" build
+          idf.py -C examples/factory -B build/factory_firmware set-target "$TARGET" build
       # The merged image is a workflow artifact for maintainers to test on hardware. The
       # tested image is committed to firmware/ by hand; it is not attached to Releases.
       - name: Merge the factory firmware image
@@ -280,7 +280,7 @@ jobs:
         run: |
           python3 "$TEMPLATE_DIR/ci/package_firmware.py" \
             --framework esp-idf \
-            --project firmware/sourcecode \
+            --project examples/factory \
             --build-dir build/factory_firmware \
             --name factory_firmware \
             --framework-version "$IDF_VERSION" \

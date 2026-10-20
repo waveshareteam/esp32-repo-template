@@ -16,4 +16,4 @@ esptool.py --chip <esp-idf-target> --port <PORT> erase_flash
 esptool.py --chip <esp-idf-target> --port <PORT> write_flash 0x0 <PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin
 ```
 
-出厂固件源码在 [`sourcecode`](sourcecode/) 目录。<!-- 源码不开源时删除这一行。 -->
+出厂固件源码在 [`examples/factory`](../examples/factory/) 目录。<!-- 源码不开源时删除这一行。 -->

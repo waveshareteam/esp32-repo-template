@@ -25,7 +25,7 @@ from product_config import DEFAULT_PRODUCT_PATH, ProductConfigError, load_defaul
 IDF_ROOT = "examples/esp-idf/"
 ARDUINO_ROOT = "examples/arduino/examples/"
 ARDUINO_LIBRARIES = "examples/arduino/libraries/"
-FACTORY_ROOT = "firmware/sourcecode/"
+FACTORY_ROOT = "examples/factory/"
 GLOBAL_PREFIXES = (".github/",)
 CONFIG_KEYS = {
     "build_override_patterns",
