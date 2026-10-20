@@ -6,8 +6,6 @@ The text below is the original v1.0.1 release body of the ESP32-S3-Touch-AMOLED-
 
 ## ESP32-S3-Touch-AMOLED-1.75C v1.0.1
 
-[English](v1.0.1.md) | [简体中文](v1.0.1_ZH.md)
-
 This release modernizes the example layout, validates current ESP-IDF and Arduino toolchains, and
 publishes CI-built firmware for every first-party demo.
 
@@ -58,8 +56,6 @@ the same CI build.
 ---
 
 ## ESP32-S3-Touch-AMOLED-1.75C v1.0.1
-
-[English](v1.0.1.md) | [简体中文](v1.0.1_ZH.md)
 
 此版本更新了示例目录，验证了当时的 ESP-IDF 和 Arduino 工具链，并为每个第一方演示
 发布由 CI 构建的固件。

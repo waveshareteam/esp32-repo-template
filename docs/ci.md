@@ -52,7 +52,7 @@ jobs:
 
 ## 构建矩阵
 
-矩阵大小 = ESP-IDF 工程数 × `esp_idf.versions` 的个数 + Arduino 草图数，有出厂固件时再加 1。
+矩阵大小 = ESP-IDF 工程数 × `esp_idf.versions` 的个数 + Arduino 草图数。有出厂固件时另有 1 个出厂固件构建任务，它的产物不进 Release。
 
 完整工作流包含一个轻量的分类任务、两个发现任务、矩阵里的全部构建/打包任务、出厂固件构建任务，以及只在 `v*` 标签上运行的草稿 Release 任务。矩阵任务不启用快速失败（`fail-fast: false`），单个任务失败不会隐藏其他示例的结果。
 
@@ -62,11 +62,11 @@ jobs:
 
 | 改动 | 结果 |
 | --- | --- |
-| Markdown、文档图片、LICENSE、`firmware/*.bin` 等 | 不启动示例构建 |
+| Markdown、文档图片、LICENSE、`firmware/*.bin`、`hardware/**`、`.github/` 下的 issue 和 PR 模板、`CODEOWNERS` 等 | 不启动示例构建 |
 | 某个示例的源码或配置 | 只构建该示例 |
 | `examples/arduino/libraries/**` | 构建全部 Arduino 草图 |
 | `examples/factory/**` | 只构建出厂固件 |
-| `.github/**`（含 `product.json` 和调用工作流）、`scripts/**` 等全局构建路径 | 构建完整矩阵和出厂固件 |
+| `.github/` 下的其他文件（含 `product.json` 和调用工作流）、`scripts/**` 等全局构建路径 | 构建完整矩阵和出厂固件 |
 | 无法归类的非文档路径 | 构建完整矩阵，并在结果中列出 |
 | 手动触发、`v*` 标签 | 构建完整矩阵和出厂固件；`v*` 标签再创建草稿 Release |
 

@@ -17,6 +17,7 @@
   ],
   "ignore_build_patterns": [
     "firmware/*.bin",
+    "hardware/**",
     ".github/ISSUE_TEMPLATE/**",
     ".github/CODEOWNERS",
     ".github/FUNDING.yml",
@@ -40,8 +41,6 @@
   "global_build_patterns": [
     ".github/**",
     "scripts/**",
-    "tests/**",
-    "ci-routing-config.json",
-    "markdown-audit-config.json"
+    "tests/**"
   ]
 }
