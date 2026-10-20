@@ -98,6 +98,12 @@ class ClassifyChangesTests(unittest.TestCase):
         self.assertEqual(result["arduino"]["mode"], "none")
         self.assertTrue(result["docs_only"])
 
+    def test_hardware_files_build_nothing(self) -> None:
+        result = self.classify("hardware/schematic/ESP32-S3-Touch-AMOLED-2.06-Schematic-V1.0.pdf")
+        self.assertEqual(result["esp_idf"]["mode"], "none")
+        self.assertEqual(result["arduino"]["mode"], "none")
+        self.assertTrue(result["docs_only"])
+
     def test_unknown_non_document_path_routes_all(self) -> None:
         result = self.classify("tooling/custom.build")
         self.assertEqual(result["esp_idf"]["mode"], "all")
