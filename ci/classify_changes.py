@@ -197,6 +197,7 @@ def classify(
             docs_only = False
             idf_all = True
             arduino_all = True
+            factory = True
             continue
         if _matches(path, config.get("esp_idf_global_patterns", [])):
             docs_only = False

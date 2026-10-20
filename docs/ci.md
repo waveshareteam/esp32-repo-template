@@ -66,7 +66,7 @@ jobs:
 | 某个示例的源码或配置 | 只构建该示例 |
 | `examples/arduino/libraries/**` | 构建全部 Arduino 草图 |
 | `firmware/sourcecode/**` | 只构建出厂固件 |
-| `.github/**`（含 `product.json` 和调用工作流） | 构建完整矩阵 |
+| `.github/**`（含 `product.json` 和调用工作流）、`scripts/**` 等全局构建路径 | 构建完整矩阵和出厂固件 |
 | 无法归类的非文档路径 | 构建完整矩阵，并在结果中列出 |
 | 手动触发、`v*` 标签 | 构建完整矩阵和出厂固件；`v*` 标签再创建草稿 Release |
 
