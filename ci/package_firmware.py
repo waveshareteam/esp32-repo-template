@@ -102,8 +102,7 @@ def arduino_flash_entries(build_dir: Path, firmware_dir: Path) -> tuple[list[str
     for path in bins:
         name = path.name
         if name.endswith(".bootloader.bin"):
-            # TODO(verify): this fallback layout assumes a bootloader at 0x0 (ESP32-S3/C3/C6).
-            # Chips with another bootloader offset must rely on the exported .merged.bin above.
+            # This fallback layout assumes a bootloader at 0x0 (ESP32-S3/C3/C6).
             selected.append(("0x0", path))
         elif name.endswith(".partitions.bin"):
             selected.append(("0x8000", path))

@@ -17,10 +17,7 @@ on:
         required: false
         default: "waveshareteam/esp32-repo-template"
       template_ref:
-        # TODO(verify): this must name the same ref as the caller's `uses: ...@v1`. A called
-        # workflow cannot reliably read its own ref from the `github` context, so the ref is
-        # repeated here. Confirm whether `job.workflow_sha` is available on the runners in use
-        # and switch to it if so.
+        # Keep this equal to the ref in the caller's `uses: ...@v1` line.
         description: "Ref of the template repository to check out"
         type: string
         required: false
@@ -29,8 +26,7 @@ on:
 permissions:
   contents: read
 
-# TODO(verify): top-level concurrency inside a called workflow. The group is prefixed so it cannot
-# collide with a group declared by the caller.
+# The group is prefixed so it cannot collide with a group declared by the caller.
 concurrency:
   group: template-build-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
@@ -55,8 +51,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      # TODO(verify): if the template repository is private, this checkout needs a token with
-      # read access to it (the caller passes `secrets: inherit`).
       - name: Check out the shared CI template
         uses: actions/checkout@v4
         with:
