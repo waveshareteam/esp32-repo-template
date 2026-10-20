@@ -13,7 +13,7 @@ Flash with esptool:
 ```bash
 python -m pip install esptool
 esptool.py --chip <esp-idf-target> --port <PORT> erase_flash
-esptool.py --chip <esp-idf-target> --port <PORT> write_flash 0x0 <FILE>.bin
+esptool.py --chip <esp-idf-target> --port <PORT> write_flash 0x0 <PRODUCT-MODEL>_FactoryOnly_<YYYYMMDD>.bin
 ```
 
 The factory firmware source is in [`sourcecode`](sourcecode/). <!-- Delete this line when the source is closed. -->
