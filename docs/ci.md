@@ -48,7 +48,7 @@ jobs:
 - Arduino 草图是 `examples/arduino/examples/` 下包含顶层 `.ino` 文件的第一方目录。
 - `examples/arduino/libraries/**` 和本地组件自带的示例被排除。
 - `product.json` 没有 `esp_idf` 或 `arduino` 字段时，对应框架不构建。
-- 出厂固件是 `firmware/sourcecode/` 这一个 ESP-IDF 工程，只在 `product.json` 有 `factory_firmware` 时构建，使用其中指定的那一个 ESP-IDF 版本。
+- 出厂固件是 `examples/factory/` 这一个 ESP-IDF 工程，只在 `product.json` 有 `factory_firmware` 时构建，使用其中指定的那一个 ESP-IDF 版本。
 
 ## 构建矩阵
 
@@ -65,7 +65,7 @@ jobs:
 | Markdown、文档图片、LICENSE、`firmware/*.bin` 等 | 不启动示例构建 |
 | 某个示例的源码或配置 | 只构建该示例 |
 | `examples/arduino/libraries/**` | 构建全部 Arduino 草图 |
-| `firmware/sourcecode/**` | 只构建出厂固件 |
+| `examples/factory/**` | 只构建出厂固件 |
 | `.github/**`（含 `product.json` 和调用工作流）、`scripts/**` 等全局构建路径 | 构建完整矩阵和出厂固件 |
 | 无法归类的非文档路径 | 构建完整矩阵，并在结果中列出 |
 | 手动触发、`v*` 标签 | 构建完整矩阵和出厂固件；`v*` 标签再创建草稿 Release |

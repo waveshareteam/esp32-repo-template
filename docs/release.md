@@ -24,8 +24,8 @@
 
 | 情况 | 产品仓库 |
 | --- | --- |
-| 源码开源 | 源码放在 `firmware/sourcecode/`（一个 ESP-IDF 工程），`product.json` 写 `"factory_firmware": { "esp_idf": "v5.5.5" }`。CI 用这个版本编译，合并镜像 `<产品名>_FactoryOnly.bin` 作为 `factory-firmware` 产物上传，维护者下载后实测、改名提交到 `firmware/` |
-| 源码不开源 | 没有 `firmware/sourcecode/`，`product.json` 不写 `factory_firmware`，维护者直接提交合并镜像 |
+| 源码开源 | 源码放在 `examples/factory/`（一个 ESP-IDF 工程），`product.json` 写 `"factory_firmware": { "esp_idf": "v5.5.5" }`。CI 用这个版本编译，合并镜像 `<产品名>_FactoryOnly.bin` 作为 `factory-firmware` 产物上传，维护者下载后实测、改名提交到 `firmware/` |
+| 源码不开源 | 没有 `examples/factory/`，`product.json` 不写 `factory_firmware`，维护者直接提交合并镜像 |
 
 出厂固件只用一个 ESP-IDF 版本构建，不跟随 `esp_idf.versions`。
 
