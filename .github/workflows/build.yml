@@ -135,12 +135,14 @@ jobs:
           repository: ${{ inputs.template_repository }}
           ref: ${{ inputs.template_ref }}
           path: ${{ env.TEMPLATE_DIR }}
+      # --preview lets set-target accept preview targets such as ESP32-S31 on ESP-IDF v6.1;
+      # it has no effect on supported targets.
       - name: Build ${{ matrix.path }} with ESP-IDF ${{ matrix.idf }}
         shell: bash
         run: |
           . "$IDF_PATH/export.sh"
           idf.py --version
-          idf.py -C "${{ matrix.path }}" -B "build/${{ matrix.name }}-${{ matrix.idf }}" set-target "${{ matrix.target }}" build
+          idf.py --preview -C "${{ matrix.path }}" -B "build/${{ matrix.name }}-${{ matrix.idf }}" set-target "${{ matrix.target }}" build
       - name: Package firmware
         shell: bash
         run: |
@@ -266,7 +268,7 @@ jobs:
         run: |
           . "$IDF_PATH/export.sh"
           idf.py --version
-          idf.py -C examples/factory -B build/factory_firmware set-target "$TARGET" build
+          idf.py --preview -C examples/factory -B build/factory_firmware set-target "$TARGET" build
       # The merged image is a workflow artifact for maintainers to test on hardware. The
       # tested image is committed to firmware/ by hand; it is not attached to Releases.
       - name: Merge the factory firmware image

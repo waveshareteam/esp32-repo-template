@@ -126,6 +126,7 @@ class DiscoverExamplesTests(unittest.TestCase):
         self.assertIn("--product .github/product.json", discover_job)
         self.assertIn('--fqbn "${{ matrix.fqbn }}"', workflow)
         self.assertIn('set-target "${{ matrix.target }}"', workflow)
+        self.assertEqual(workflow.count("idf.py --preview -C"), 2, "set-target must accept preview targets")
         self.assertIn("espressif/idf:${{ matrix.idf }}", workflow)
         for hardcoded in ("esp32s3", "v5.5", "v6.0", "3.3.11", "FlashSize"):
             self.assertNotIn(hardcoded, workflow, f"{hardcoded} must come from product.json")
@@ -139,7 +140,7 @@ class DiscoverExamplesTests(unittest.TestCase):
 
     def test_workflow_builds_the_factory_firmware_but_keeps_it_out_of_releases(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("idf.py -C examples/factory", workflow)
+        self.assertIn("idf.py --preview -C examples/factory", workflow)
         self.assertIn('"release-artifacts/${PRODUCT}_FactoryOnly.bin"', workflow)
         self.assertNotIn("release-downloads/*_FactoryOnly.bin", workflow)
 
