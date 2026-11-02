@@ -144,6 +144,18 @@ class DiscoverExamplesTests(unittest.TestCase):
         self.assertIn('"release-artifacts/${PRODUCT}_FactoryOnly.bin"', workflow)
         self.assertNotIn("release-downloads/*_FactoryOnly.bin", workflow)
 
+    def test_factory_firmware_job_frees_runner_disk_before_checkout(self) -> None:
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        factory_job = workflow.split("  build-factory-firmware:\n", 1)[1].split("  draft-release:\n", 1)[0]
+        for volume in ("/usr/local/lib/android:/host/android", "/usr/share/dotnet:/host/dotnet"):
+            self.assertIn(volume, factory_job)
+        self.assertIn("for dir in /host/android /host/dotnet /__t; do", factory_job)
+        self.assertLess(
+            factory_job.index("- name: Free disk space on the runner"),
+            factory_job.index("- uses: actions/checkout@v4"),
+            "free the disk before checking out",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

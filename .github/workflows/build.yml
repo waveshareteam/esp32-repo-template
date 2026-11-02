@@ -250,12 +250,27 @@ jobs:
     needs: classify-changes
     if: needs.classify-changes.outputs.factory_firmware == 'true' && needs.classify-changes.outputs.factory_esp_idf != ''
     runs-on: ubuntu-latest
-    container: espressif/idf:${{ needs.classify-changes.outputs.factory_esp_idf }}
+    container:
+      image: espressif/idf:${{ needs.classify-changes.outputs.factory_esp_idf }}
+      # Large factory projects can fill the runner disk. Mount preinstalled host software this
+      # job does not use so that the first step can delete it.
+      volumes:
+        - /usr/local/lib/android:/host/android
+        - /usr/share/dotnet:/host/dotnet
     env:
       IDF_VERSION: ${{ needs.classify-changes.outputs.factory_esp_idf }}
       PRODUCT: ${{ needs.classify-changes.outputs.product }}
       TARGET: ${{ needs.classify-changes.outputs.target }}
     steps:
+      # /__t is the runner tool cache (/opt/hostedtoolcache), mounted into every container job.
+      - name: Free disk space on the runner
+        shell: bash
+        run: |
+          df -h /__w
+          for dir in /host/android /host/dotnet /__t; do
+            find "$dir" -mindepth 1 -delete || true
+          done
+          df -h /__w
       - uses: actions/checkout@v4
       - name: Check out the shared CI template
         uses: actions/checkout@v4
@@ -269,6 +284,7 @@ jobs:
           . "$IDF_PATH/export.sh"
           idf.py --version
           idf.py --preview -C examples/factory -B build/factory_firmware set-target "$TARGET" build
+          df -h /__w
       # The merged image is a workflow artifact for maintainers to test on hardware. The
       # tested image is committed to firmware/ by hand; it is not attached to Releases.
       - name: Merge the factory firmware image
