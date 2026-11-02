@@ -129,6 +129,8 @@ class DiscoverExamplesTests(unittest.TestCase):
 
     def test_workflow_generates_board_code_before_both_esp_idf_builds(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
+        # The Component Manager parses IDF_VERSION as a plain version, so a tag there breaks bmgr.
+        self.assertNotIn("IDF_VERSION", workflow)
         for job in ("  build-esp-idf:\n", "  build-factory-firmware:\n"):
             steps = workflow.split(job, 1)[1]
             self.assertLess(steps.index('python -m pip install "$BMGR_ASSIST"'), steps.index('bmgr -b "$BOARD"'))

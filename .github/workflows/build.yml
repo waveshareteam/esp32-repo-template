@@ -267,7 +267,7 @@ jobs:
         - /usr/local/lib/android:/host/android
         - /usr/share/dotnet:/host/dotnet
     env:
-      IDF_VERSION: ${{ needs.classify-changes.outputs.factory_esp_idf }}
+      FACTORY_IDF: ${{ needs.classify-changes.outputs.factory_esp_idf }}
       PRODUCT: ${{ needs.classify-changes.outputs.product }}
       TARGET: ${{ needs.classify-changes.outputs.target }}
       BOARD: ${{ needs.classify-changes.outputs.board }}
@@ -288,7 +288,7 @@ jobs:
           repository: ${{ inputs.template_repository }}
           ref: ${{ inputs.template_ref }}
           path: ${{ env.TEMPLATE_DIR }}
-      - name: Build the factory firmware with ESP-IDF ${{ env.IDF_VERSION }}
+      - name: Build the factory firmware with ESP-IDF ${{ env.FACTORY_IDF }}
         shell: bash
         run: |
           . "$IDF_PATH/export.sh"
@@ -309,7 +309,7 @@ jobs:
             --project examples/factory \
             --build-dir build/factory_firmware \
             --name factory_firmware \
-            --framework-version "$IDF_VERSION" \
+            --framework-version "$FACTORY_IDF" \
             --target "$TARGET" \
             --git-sha "${{ github.sha }}" \
             --output-dir release-artifacts
