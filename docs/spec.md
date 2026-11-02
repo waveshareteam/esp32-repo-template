@@ -36,8 +36,9 @@
 
 目录规则：
 
-- 顶层只允许出现上面列出的条目。CI 脚本、测试、发布工具、规范文档放在本仓库。CONTRIBUTING、SUPPORT、SECURITY、issue 和 PR 模板由 `waveshareteam/.github` 提供，组织下的仓库自动继承。
-- 没有 Arduino 示例的产品不建 `examples/arduino/`，也不在 `product.json` 里写 `arduino`。没有 ESP-IDF 示例的产品同理。
+- 顶层只允许出现上面列出的条目。CI 脚本、测试、发布工具、规范文档放在本仓库。CONTRIBUTING、SUPPORT、SECURITY、issue 和 PR 模板由 `waveshareteam/.github` 提供，组织下的公开仓库自动继承。私有仓库继承不到，私有阶段可以保留这些文件，公开时删除。
+- 没有 Arduino 示例的产品不建 `examples/arduino/`，也不在 `product.json` 里写 `arduino`，README 头部也不放 Arduino 快捷链接。没有 ESP-IDF 示例的产品不建 `examples/esp-idf/`，也不在 `product.json` 里写 `esp_idf`。
+- 用 `esp_board_manager` 管理板级配置的产品，在 `product.json` 写 `board_manager.board`。这时所有 ESP-IDF 示例和 `examples/factory/` 都必须依赖 Board Manager 和这块板的定义（通常是托管组件 `waveshare/waveshare_boards`）。生成的 `components/gen_bmgr_codes/` 不提交。
 - 示例目录不带框架版本号（不用 `ESP-IDF-v5.5/` 这类名字），版本只写在 `product.json`。
 - 每个示例都必须能用 `product.json` 列出的全部框架版本编译。
 - `examples/arduino/libraries/` 是所有草图共用的一套库，同一个库只放一个版本（例如只放一个 LVGL）。
@@ -68,7 +69,7 @@
 | 信息 | 唯一来源 |
 | --- | --- |
 | 框架版本、FQBN | `product.json` |
-| 引脚定义 | 托管 BSP 或 `board_config/pin_config.h` |
+| 引脚定义 | 托管 BSP、Board Manager 板卡定义或 `board_config/pin_config.h` |
 | 固件包格式、烧录说明 | 本仓库 [`docs/release.md`](release.md) 和固件包自带的 README |
 | issue 需提供的信息 | 组织仓库的 issue 模板 |
 | CI 和发布规则 | 本仓库 [`docs/ci.md`](ci.md)、[`docs/release.md`](release.md) |

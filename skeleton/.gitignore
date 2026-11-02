@@ -2,6 +2,7 @@
 **/.idea
 **/build
 **/managed_components
+**/components/gen_bmgr_codes/
 **/dependencies.lock
 **/sdkconfig
 **/sdkconfig.old

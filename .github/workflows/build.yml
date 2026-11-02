@@ -33,6 +33,7 @@ concurrency:
 
 env:
   TEMPLATE_DIR: .ci-template
+  BMGR_ASSIST: esp-bmgr-assist==0.8.3
 
 jobs:
   classify-changes:
@@ -47,6 +48,7 @@ jobs:
       product: ${{ steps.product.outputs.product }}
       target: ${{ steps.product.outputs.target }}
       factory_esp_idf: ${{ steps.product.outputs.factory_esp_idf }}
+      board: ${{ steps.product.outputs.board }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -139,9 +141,16 @@ jobs:
       # it has no effect on supported targets.
       - name: Build ${{ matrix.path }} with ESP-IDF ${{ matrix.idf }}
         shell: bash
+        env:
+          BOARD: ${{ matrix.board }}
         run: |
           . "$IDF_PATH/export.sh"
           idf.py --version
+          # esp-bmgr-assist makes `idf.py bmgr` available and downloads the managed board on first use.
+          if [ -n "$BOARD" ]; then
+            python -m pip install "$BMGR_ASSIST"
+            IDF_TARGET="${{ matrix.target }}" idf.py --preview -C "${{ matrix.path }}" -B "build/${{ matrix.name }}-${{ matrix.idf }}" bmgr -b "$BOARD"
+          fi
           idf.py --preview -C "${{ matrix.path }}" -B "build/${{ matrix.name }}-${{ matrix.idf }}" set-target "${{ matrix.target }}" build
       - name: Package firmware
         shell: bash
@@ -261,6 +270,7 @@ jobs:
       IDF_VERSION: ${{ needs.classify-changes.outputs.factory_esp_idf }}
       PRODUCT: ${{ needs.classify-changes.outputs.product }}
       TARGET: ${{ needs.classify-changes.outputs.target }}
+      BOARD: ${{ needs.classify-changes.outputs.board }}
     steps:
       # /__t is the runner tool cache (/opt/hostedtoolcache), mounted into every container job.
       - name: Free disk space on the runner
@@ -283,6 +293,10 @@ jobs:
         run: |
           . "$IDF_PATH/export.sh"
           idf.py --version
+          if [ -n "$BOARD" ]; then
+            python -m pip install "$BMGR_ASSIST"
+            IDF_TARGET="$TARGET" idf.py --preview -C examples/factory -B build/factory_firmware bmgr -b "$BOARD"
+          fi
           idf.py --preview -C examples/factory -B build/factory_firmware set-target "$TARGET" build
           df -h /__w
       # The merged image is a workflow artifact for maintainers to test on hardware. The

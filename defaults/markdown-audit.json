@@ -36,7 +36,6 @@
         "product",
         "firmware",
         "esp_idf",
-        "arduino",
         "documentation"
       ],
       "required_badges": [
