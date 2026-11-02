@@ -38,7 +38,7 @@
 
 - 顶层只允许出现上面列出的条目。CI 脚本、测试、发布工具、规范文档放在本仓库。CONTRIBUTING、SUPPORT、SECURITY、issue 和 PR 模板由 `waveshareteam/.github` 提供，组织下的公开仓库自动继承。私有仓库继承不到，私有阶段可以保留这些文件，公开时删除。
 - 没有 Arduino 示例的产品不建 `examples/arduino/`，也不在 `product.json` 里写 `arduino`，README 头部也不放 Arduino 快捷链接。没有 ESP-IDF 示例的产品不建 `examples/esp-idf/`，也不在 `product.json` 里写 `esp_idf`。
-- 用 `esp_board_manager` 管理板级配置的产品，在 `product.json` 写 `board_manager.board`。这时所有 ESP-IDF 示例和 `examples/factory/` 都必须依赖 Board Manager 和这块板的定义（通常是托管组件 `waveshare/waveshare_boards`）。生成的 `components/gen_bmgr_codes/` 不提交。
+- 用 `esp_board_manager` 管理板级配置的产品，在 `product.json` 写 `board_manager.board`。这时所有 ESP-IDF 示例和 `examples/factory/` 都必须依赖 Board Manager 和这块板的定义（通常是托管组件 `waveshare/waveshare_boards`）。生成的 `components/gen_bmgr_codes/` 不提交。这类产品的 ESP-IDF 示例 README 要写明 `idf.py bmgr -b <板名>` 这一步，其他产品不写。
 - 示例目录不带框架版本号（不用 `ESP-IDF-v5.5/` 这类名字），版本只写在 `product.json`。
 - 每个示例都必须能用 `product.json` 列出的全部框架版本编译。
 - `examples/arduino/libraries/` 是所有草图共用的一套库，同一个库只放一个版本（例如只放一个 LVGL）。

@@ -13,13 +13,21 @@
 
 ## 怎么运行
 
-<!-- ESP-IDF 示例：保留这一段，删除 Arduino 那一段。 -->
+<!-- ESP-IDF 示例，product.json 没有 board_manager：保留这一段，删除另外两段。 -->
 
 ```bash
 idf.py set-target <esp-idf-target> build flash monitor
 ```
 
-<!-- Arduino 示例：保留这一段，删除 ESP-IDF 那一段。 -->
+<!-- ESP-IDF 示例，product.json 有 board_manager：保留这一段，删除另外两段。 -->
+
+```bash
+pip install esp-bmgr-assist
+idf.py bmgr -b <board-name>
+idf.py build flash monitor
+```
+
+<!-- Arduino 示例：保留这一段，删除另外两段。 -->
 
 1. 在开发板管理器中安装 `esp32`（Arduino-ESP32），版本见仓库 README。
 2. 把项目文件夹位置设为 `examples/arduino/`，或把 `examples/arduino/libraries/` 复制到项目文件夹下的 `libraries` 文件夹。
