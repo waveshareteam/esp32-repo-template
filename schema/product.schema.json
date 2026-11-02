@@ -83,6 +83,19 @@
         }
       }
     },
+    "board_manager": {
+      "description": "Present when the ESP-IDF projects select their board through esp_board_manager. CI runs `idf.py bmgr -b <board>` before every ESP-IDF build.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["board"],
+      "properties": {
+        "board": {
+          "description": "Board name passed to `idf.py bmgr -b`, such as esp32_s3_touch_amoled_1_75c.",
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        }
+      }
+    },
     "overrides": {
       "description": "Per-product additions to the template defaults. Lists are appended to the default list; every other value replaces the default.",
       "type": "object",

@@ -32,12 +32,14 @@ TOP_LEVEL_KEYS = {
     "esp_idf",
     "arduino",
     "factory_firmware",
+    "board_manager",
     "overrides",
 }
 TARGET_PATTERN = re.compile(r"^esp32([a-z][0-9]+)?$")
 IDF_VERSION_PATTERN = re.compile(r"^v[0-9]+\.[0-9]+(\.[0-9]+)?$")
 ARDUINO_CORE_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 FQBN_PATTERN = re.compile(r"^[^:\s]+:[^:\s]+:[^:\s]+(:[^\s]+)?$")
+BOARD_PATTERN = re.compile(r"^[a-z0-9_]+$")
 
 
 class ProductConfigError(RuntimeError):
@@ -100,6 +102,14 @@ def validate(data: object) -> dict:
         or not IDF_VERSION_PATTERN.match(factory["esp_idf"])
     ):
         raise ProductConfigError("factory_firmware must be an object with only an esp_idf tag such as v5.5.5")
+    board_manager = data.get("board_manager")
+    if board_manager is not None and (
+        not isinstance(board_manager, dict)
+        or set(board_manager) != {"board"}
+        or not isinstance(board_manager["board"], str)
+        or not BOARD_PATTERN.match(board_manager["board"])
+    ):
+        raise ProductConfigError("board_manager must be an object with only a board name")
 
     overrides = data.get("overrides", {})
     if not isinstance(overrides, dict) or set(overrides) - set(OVERRIDE_DEFAULTS):
@@ -166,6 +176,7 @@ def main() -> int:
         "arduino_core": arduino.get("core", ""),
         "arduino_fqbn": arduino.get("fqbn", ""),
         "factory_esp_idf": product.get("factory_firmware", {}).get("esp_idf", ""),
+        "board": product.get("board_manager", {}).get("board", ""),
     }
     if args.github_output:
         with open(args.github_output, "a", encoding="utf-8") as handle:

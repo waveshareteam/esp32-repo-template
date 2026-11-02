@@ -9,5 +9,6 @@
     "core": "<X.Y.Z>",
     "fqbn": "<esp32:esp32:board:Option=value,...>"
   },
-  "factory_firmware": { "esp_idf": "<vX.Y.Z>" }
+  "factory_firmware": { "esp_idf": "<vX.Y.Z>" },
+  "board_manager": { "board": "<board-name>" }
 }

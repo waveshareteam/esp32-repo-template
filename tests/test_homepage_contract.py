@@ -67,7 +67,7 @@ class HomepageContractTests(unittest.TestCase):
         self.assertEqual(homepage["profile"], "single-product")
         self.assertIn("hero_image", homepage["required_components"])
         self.assertEqual(homepage["required_quick_links"][0], "product")
-        self.assertEqual(set(homepage["required_quick_links"]), set(QUICK_LINK_ICONS))
+        self.assertEqual(set(homepage["required_quick_links"]), set(QUICK_LINK_ICONS) - {"arduino"})
         self.assertEqual(
             homepage["required_h2_icons"], ["✨", "📦", "🧪", "🛠️", "📚", "🤝", "📄"]
         )

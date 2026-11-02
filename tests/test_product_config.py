@@ -43,6 +43,8 @@ def _invalid_documents() -> dict[str, dict]:
         "relative product url": changed(product_url="www.waveshare.com"),
         "factory firmware as a link": changed(factory_firmware="https://example.com/releases"),
         "bad factory idf tag": changed(factory_firmware={"esp_idf": "5.5.5"}),
+        "board manager as a name": changed(board_manager="esp32_s3_board"),
+        "bad board name": changed(board_manager={"board": "ESP32-S3 Board"}),
     }
 
 
@@ -109,6 +111,7 @@ class ProductConfigTests(unittest.TestCase):
         self.assertEqual(values["idf_versions"], "v5.5.5,v6.0.2")
         self.assertEqual(values["arduino_fqbn"], VALID["arduino"]["fqbn"])
         self.assertEqual(values["factory_esp_idf"], "v5.5.5")
+        self.assertEqual(values["board"], "")
 
     @unittest.skipUnless(
         product_repo(),

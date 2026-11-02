@@ -35,7 +35,7 @@ jobs:
 
 | 配置 | 来源 |
 | --- | --- |
-| 产品名、ESP-IDF target、ESP-IDF 版本、Arduino core、Arduino FQBN | 产品仓库的 `.github/product.json` |
+| 产品名、ESP-IDF target、ESP-IDF 版本、Arduino core、Arduino FQBN、Board Manager 板名 | 产品仓库的 `.github/product.json` |
 | 变更路由规则 | 本仓库的 `defaults/ci-routing.json` |
 | Markdown 审计规则 | 本仓库的 `defaults/markdown-audit.json` |
 | 单个产品的例外 | `product.json` 的 `overrides.ci_routing`、`overrides.markdown_audit` |
@@ -53,6 +53,10 @@ jobs:
 ## 构建矩阵
 
 矩阵大小 = ESP-IDF 工程数 × `esp_idf.versions` 的个数 + Arduino 草图数。有出厂固件时另有 1 个出厂固件构建任务，它的产物不进 Release。出厂固件工程较大，这个任务开始时先删除 Runner 上用不到的预装软件（Android SDK、.NET 和工具缓存），给编译腾出磁盘空间。
+
+`product.json` 有 `board_manager.board` 时，每个 ESP-IDF 构建（含出厂固件）先安装 `esp-bmgr-assist` 并运行 `idf.py bmgr -b <board>`，再 `set-target` 和编译。依赖由这一步自动解析，生成的 `components/gen_bmgr_codes/` 不提交。没有这个字段的产品不运行这些步骤。
+
+固件包的烧录命令沿用 `flasher_args.json` 的设置：工程关闭 stub（`extra_esptool_args.stub` 为 `false`）时，命令带 `--no-stub`。
 
 完整工作流包含一个轻量的分类任务、两个发现任务、矩阵里的全部构建/打包任务、出厂固件构建任务，以及只在 `v*` 标签上运行的草稿 Release 任务。矩阵任务不启用快速失败（`fail-fast: false`），单个任务失败不会隐藏其他示例的结果。
 

@@ -107,6 +107,35 @@ class DiscoverExamplesTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertEqual(json.loads(completed.stdout)["include"], [])
 
+    def test_board_manager_board_reaches_only_the_esp_idf_matrix(self) -> None:
+        self.assertNotIn("board", json.loads(self.run_cli("--surface", "esp-idf").stdout)["include"][0])
+        product = PRODUCT | {"board_manager": {"board": "esp32_s3_fixture_board"}}
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = make_product_repo(Path(tmp) / "repo", product)
+            matrices = {
+                surface: json.loads(subprocess.run(
+                    [
+                        sys.executable, str(CI / "discover_examples.py"),
+                        "--repo", str(repo), "--surface", surface,
+                    ],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout)["include"]
+                for surface in ("esp-idf", "arduino")
+            }
+        self.assertEqual({item["board"] for item in matrices["esp-idf"]}, {"esp32_s3_fixture_board"})
+        self.assertTrue(all("board" not in item for item in matrices["arduino"]))
+
+    def test_workflow_generates_board_code_before_both_esp_idf_builds(self) -> None:
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        # The Component Manager parses IDF_VERSION as a plain version, so a tag there breaks bmgr.
+        self.assertNotIn("IDF_VERSION", workflow)
+        for job in ("  build-esp-idf:\n", "  build-factory-firmware:\n"):
+            steps = workflow.split(job, 1)[1]
+            self.assertLess(steps.index('python -m pip install "$BMGR_ASSIST"'), steps.index('bmgr -b "$BOARD"'))
+            self.assertLess(steps.index('bmgr -b "$BOARD"'), steps.index(' set-target "'))
+
     def test_missing_product_json_fails_closed(self) -> None:
         completed = self.run_cli("--surface", "esp-idf", "--product", ".github/missing.json")
         self.assertEqual(completed.returncode, 2)
@@ -126,7 +155,10 @@ class DiscoverExamplesTests(unittest.TestCase):
         self.assertIn("--product .github/product.json", discover_job)
         self.assertIn('--fqbn "${{ matrix.fqbn }}"', workflow)
         self.assertIn('set-target "${{ matrix.target }}"', workflow)
-        self.assertEqual(workflow.count("idf.py --preview -C"), 2, "set-target must accept preview targets")
+        builds = [line for line in workflow.splitlines() if " set-target " in line and "idf.py" in line]
+        self.assertEqual(len(builds), 2)
+        for build in builds:
+            self.assertIn("idf.py --preview -C", build, "set-target must accept preview targets")
         self.assertIn("espressif/idf:${{ matrix.idf }}", workflow)
         for hardcoded in ("esp32s3", "v5.5", "v6.0", "3.3.11", "FlashSize"):
             self.assertNotIn(hardcoded, workflow, f"{hardcoded} must come from product.json")

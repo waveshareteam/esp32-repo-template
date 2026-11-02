@@ -13,13 +13,21 @@
 
 ## How to Run
 
-<!-- ESP-IDF example: keep this block, delete the Arduino block. -->
+<!-- ESP-IDF example, no board_manager in product.json: keep this block, delete the other two. -->
 
 ```bash
 idf.py set-target <esp-idf-target> build flash monitor
 ```
 
-<!-- Arduino example: keep this block, delete the ESP-IDF block. -->
+<!-- ESP-IDF example, board_manager in product.json: keep this block, delete the other two. -->
+
+```bash
+pip install esp-bmgr-assist
+idf.py bmgr -b <board-name>
+idf.py build flash monitor
+```
+
+<!-- Arduino example: keep this block, delete the other two. -->
 
 1. Install the `esp32` board package (Arduino-ESP32) in the version listed in the repository README.
 2. Set the sketchbook location to `examples/arduino/`, or copy `examples/arduino/libraries/` into

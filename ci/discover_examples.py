@@ -112,8 +112,9 @@ def build_matrix(args: argparse.Namespace) -> dict[str, list[dict[str, str]]]:
     selector = normalize(args.selector)
     if args.surface == "esp-idf":
         projects = [entry for entry in discover_esp_idf(repo) if selector_matches(entry, selector)]
+        board_manager = product.get("board_manager", {})
         include = [
-            entry | common | {"idf": version}
+            entry | common | board_manager | {"idf": version}
             for entry in projects
             for version in idf_versions(product)
         ]

@@ -123,7 +123,7 @@ def arduino_flash_entries(build_dir: Path, firmware_dir: Path) -> tuple[list[str
     return command_pairs, entries
 
 
-def build_esptool_prefix(chip: str, before: str, after: str) -> list[str]:
+def build_esptool_prefix(chip: str, before: str, after: str, stub: bool) -> list[str]:
     return [
         "python",
         "-m",
@@ -138,6 +138,7 @@ def build_esptool_prefix(chip: str, before: str, after: str) -> list[str]:
         before,
         "--after",
         after,
+        *([] if stub else ["--no-stub"]),
         "write_flash",
     ]
 
@@ -304,20 +305,22 @@ def package(args: argparse.Namespace) -> Path:
         chip = args.target or extra_args.get("chip")
         before = extra_args.get("before", "default_reset")
         after = extra_args.get("after", "hard_reset")
+        stub = extra_args.get("stub", True)
         write_flash_args = [str(item) for item in flasher_args.get("write_flash_args", [])]
     else:
         command_pairs, files = arduino_flash_entries(build_dir, firmware_dir)
         chip = args.target
         before = "default_reset"
         after = "hard_reset"
+        stub = True
         write_flash_args = []
 
     if not chip:
         raise ValueError("no chip target: pass --target or provide a readable --product file")
-    command = build_esptool_prefix(chip, before, after) + write_flash_args + command_pairs
+    command = build_esptool_prefix(chip, before, after, stub) + write_flash_args + command_pairs
     combined_bin = create_combined_binary(package_dir, firmware_dir, files, artifact_name)
     combined_command = (
-        build_esptool_prefix(chip, before, after)
+        build_esptool_prefix(chip, before, after, stub)
         + write_flash_args
         + [str(combined_bin["offset"]), str(combined_bin["file"])]
     )
