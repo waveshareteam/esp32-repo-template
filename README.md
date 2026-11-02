@@ -49,6 +49,7 @@
    | `esp_idf.versions` | 要构建的 ESP-IDF 版本标签；没有 ESP-IDF 示例时删除 `esp_idf` |
    | `arduino.core`、`arduino.fqbn` | Arduino-ESP32 版本和完整 FQBN；没有 Arduino 示例时删除 `arduino` |
    | `factory_firmware.esp_idf` | 构建 `examples/factory/` 出厂固件源码的 ESP-IDF 版本；出厂固件不开源时删除 `factory_firmware`，见[发布](docs/release.md#出厂固件) |
+   | `board_manager.board` | `idf.py bmgr -b` 使用的板名；没有用 `esp_board_manager` 时删除 `board_manager`，见[目录规范](docs/spec.md#目录规范) |
    | `overrides` | 可选，对 `defaults/` 的补充，见 [CI 文档](docs/ci.md#配置来源) |
 
 3. 按[目录规范](docs/spec.md#目录规范)整理示例和硬件资料，填写两份 README。
