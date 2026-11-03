@@ -22,7 +22,7 @@ idf.py set-target <esp-idf-target> build flash monitor
 <!-- ESP-IDF example, board_manager in product.json: keep this block with the real board name from product.json, delete the other two. -->
 
 ```bash
-pip install esp-bmgr-assist
+python -m pip install --upgrade esp-bmgr-assist
 idf.py bmgr -b <board-name>
 idf.py build flash monitor
 ```

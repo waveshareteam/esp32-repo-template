@@ -133,7 +133,7 @@ class DiscoverExamplesTests(unittest.TestCase):
         self.assertNotIn("IDF_VERSION", workflow)
         for job in ("  build-esp-idf:\n", "  build-factory-firmware:\n"):
             steps = workflow.split(job, 1)[1]
-            self.assertLess(steps.index('python -m pip install "$BMGR_ASSIST"'), steps.index('bmgr -b "$BOARD"'))
+            self.assertLess(steps.index('python -m pip install --upgrade esp-bmgr-assist'), steps.index('bmgr -b "$BOARD"'))
             self.assertLess(steps.index('bmgr -b "$BOARD"'), steps.index(' set-target "'))
 
     def test_missing_product_json_fails_closed(self) -> None:
