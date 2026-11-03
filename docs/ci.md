@@ -54,7 +54,7 @@ jobs:
 
 矩阵大小 = ESP-IDF 工程数 × `esp_idf.versions` 的个数 + Arduino 草图数。有出厂固件时另有 1 个出厂固件构建任务，它的产物不进 Release。出厂固件工程较大，这个任务开始时先删除 Runner 上用不到的预装软件（Android SDK、.NET 和工具缓存），给编译腾出磁盘空间。
 
-`product.json` 有 `board_manager.board` 时，每个 ESP-IDF 构建（含出厂固件）先安装 `esp-bmgr-assist` 并运行 `idf.py bmgr -b <board>`，再 `set-target` 和编译。依赖由这一步自动解析，生成的 `components/gen_bmgr_codes/` 不提交。没有这个字段的产品不运行这些步骤。
+`product.json` 有 `board_manager.board` 时，每个 ESP-IDF 构建（含出厂固件）先安装最新版 `esp-bmgr-assist`（和用户按 README 安装的一致）并运行 `idf.py bmgr -b <board>`，再 `set-target` 和编译。依赖由这一步自动解析，生成的 `components/gen_bmgr_codes/` 不提交。没有这个字段的产品不运行这些步骤。
 
 固件包的烧录命令沿用 `flasher_args.json` 的设置：工程关闭 stub（`extra_esptool_args.stub` 为 `false`）时，命令带 `--no-stub`。
 

@@ -33,7 +33,6 @@ concurrency:
 
 env:
   TEMPLATE_DIR: .ci-template
-  BMGR_ASSIST: esp-bmgr-assist==0.8.3
 
 jobs:
   classify-changes:
@@ -146,9 +145,9 @@ jobs:
         run: |
           . "$IDF_PATH/export.sh"
           idf.py --version
-          # esp-bmgr-assist makes `idf.py bmgr` available and downloads the managed board on first use.
+          # The latest esp-bmgr-assist makes `idf.py bmgr` available, the same version users install from the README.
           if [ -n "$BOARD" ]; then
-            python -m pip install "$BMGR_ASSIST"
+            python -m pip install --upgrade esp-bmgr-assist
             IDF_TARGET="${{ matrix.target }}" idf.py --preview -C "${{ matrix.path }}" -B "build/${{ matrix.name }}-${{ matrix.idf }}" bmgr -b "$BOARD"
           fi
           idf.py --preview -C "${{ matrix.path }}" -B "build/${{ matrix.name }}-${{ matrix.idf }}" set-target "${{ matrix.target }}" build
@@ -294,7 +293,7 @@ jobs:
           . "$IDF_PATH/export.sh"
           idf.py --version
           if [ -n "$BOARD" ]; then
-            python -m pip install "$BMGR_ASSIST"
+            python -m pip install --upgrade esp-bmgr-assist
             IDF_TARGET="$TARGET" idf.py --preview -C examples/factory -B build/factory_firmware bmgr -b "$BOARD"
           fi
           idf.py --preview -C examples/factory -B build/factory_firmware set-target "$TARGET" build
