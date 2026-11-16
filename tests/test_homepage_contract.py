@@ -14,11 +14,11 @@ HOMEPAGES = ("README.md", "README_ZH.md")
 HERO_IMAGE = re.compile(r'<img src="(docs/images/[^"]+)" alt="([^"]+)" width="500">')
 H2 = re.compile(r"^## (\S+) ", re.MULTILINE)
 QUICK_LINK_ICONS = {
-    "product": "🌐",
+    "product": "🛒",
     "firmware": "📦",
     "esp_idf": "🧩",
     "arduino": "🔧",
-    "documentation": "📚",
+    "documentation": "📖",
 }
 # Local `releases/` links are maintainer tooling; the GitHub `.../releases/latest` URL is not.
 MAINTAINER_ONLY = (

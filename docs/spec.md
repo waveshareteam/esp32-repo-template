@@ -116,6 +116,8 @@
 | 🤝 支持 | issue 和官方支持的链接；`README_ZH.md` 的 issue 指向 Gitee 镜像 `https://gitee.com/waveshare/<产品名>/issues`，没有 Gitee 镜像时删掉这一行，技术支持指向 `https://docs.waveshare.net/<产品名>/Technical-Support/` |
 | 📄 许可证 | 一行 |
 
+头部快捷链接依次为 🛒 Product / 产品、📦 Firmware / 固件、🧩 ESP-IDF、🔧 Arduino、📖 Documentation / 文档；仅保留产品实际提供的框架。产品入口指向商品页，文档入口指向对应语言的产品文档，与「资料」章节的 Wiki 链接一致：英文使用英文站，中文使用中文站。原理图和机械资料保留在「资料」章节。
+
 不写仓库结构表、CI 任务数、矩阵说明和维护者文档链接。章节图标和快捷链接由 [`defaults/markdown-audit.json`](../defaults/markdown-audit.json) 约束，`tests/test_homepage_contract.py` 会检查骨架 README 是否符合。
 
 ## GitHub 仓库信息
