@@ -8,11 +8,11 @@
     <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/waveshareteam/<PRODUCT-MODEL>"></a>
   </p>
   <p>
-    <a href="https://www.waveshare.com/<product-page>.htm">🌐 Product</a> &middot;
+    <a href="https://www.waveshare.com/<product-page>.htm">🛒 Product</a> &middot;
     <a href="https://github.com/waveshareteam/<PRODUCT-MODEL>/releases/latest">📦 Firmware</a> &middot;
     <a href="examples/esp-idf/">🧩 ESP-IDF</a> &middot;
     <a href="examples/arduino/examples/">🔧 Arduino</a> &middot;
-    <a href="hardware/">📚 Documentation</a>
+    <a href="<wiki URL>">📖 Documentation</a>
   </p>
   <p><img src="docs/images/<product-model>.jpg" alt="<PRODUCT-MODEL> development board" width="500"></p>
 </div>
