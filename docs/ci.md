@@ -66,7 +66,7 @@ jobs:
 
 | 改动 | 结果 |
 | --- | --- |
-| Markdown、文档图片、LICENSE、`firmware/*.bin`、`hardware/**`、`.github/` 下的 issue 和 PR 模板、`CODEOWNERS` 等 | 不启动示例构建 |
+| Markdown（含 README）、文档图片、LICENSE、`firmware/` 各级目录中的 BIN 和 `manifest.json`、`hardware/**`、`.github/` 下的 issue 和 PR 模板、`CODEOWNERS` 等 | 跳过示例和出厂固件编译 |
 | 某个示例的源码或配置 | 只构建该示例 |
 | `examples/arduino/libraries/**` | 构建全部 Arduino 草图 |
 | `examples/factory/**` | 只构建出厂固件 |
