@@ -17,6 +17,8 @@
   ],
   "ignore_build_patterns": [
     "firmware/*.bin",
+    "firmware/manifest.json",
+    "firmware/*/manifest.json",
     "hardware/**",
     ".github/ISSUE_TEMPLATE/**",
     ".github/CODEOWNERS",
