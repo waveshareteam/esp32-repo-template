@@ -33,6 +33,12 @@
 
 只有同一仓库包含多个产品，且默认检索无法为各型号选出正确的固件时，才使用固件声明。按需要在 `firmware/` 下组织 BIN 和双语 README，在 JSON 中按型号逐个填写 BIN 的仓库相对路径。多个型号经实物验证后可引用同一个 BIN。新增固件时同步更新 BIN、双语 README 和声明文件，登记时为每个型号填写 `manifest`，值为声明文件的仓库相对路径。
 
+### 单产品多屏幕例外
+
+同一开发板适配多个屏幕时，在固件中心登记一个产品。需要在每个文件名前缀中标明完整屏幕型号时，使用自声明逐个关联 BIN，登记时填写 `manifest` 路径，所有屏幕固件放在同一个产品的 `files` 中。
+
+BIN 命名为 `<产品名>-<屏幕型号>_<固件名>_<YYYYMMDD>.bin`。由维护者确认默认屏幕，其固件名使用 `FactoryOnly`，其余屏幕使用 `Factory`。每个产品至少有一个 `FactoryOnly`，同一产品的出厂日期须唯一。README 写明屏幕型号和用途，新增或替换固件时同步更新 BIN、双语 README 和声明路径。格式见[单产品多屏幕声明](https://github.com/waveshareteam/esp-firmware-sync/blob/main/docs/FIRMWARE_DECLARATION.md#单产品多屏幕)。
+
 ## 固件包格式
 
 `ci/package_firmware.py` 读取框架的构建输出，生成 `<产物名>-combined.zip`，其中包含：
