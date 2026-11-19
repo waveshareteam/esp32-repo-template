@@ -20,7 +20,7 @@
 - `firmware/README.md` 和 `README_ZH.md` 每个文件一行：文件名和用途，新版本在上。烧录命令写最新出厂固件的完整文件名，客户可以直接复制运行，换固件时一起改。
 - 提交前在实物上整片擦除后从 `0x0` 烧录验证。
 
-同步程序默认从产品仓库默认分支的 `firmware/` 顶层检索。固件中心默认选中日期最新的出厂固件。每款产品的出厂固件日期须唯一，同一天更新时替换原文件。
+同步程序默认从产品仓库默认分支的 `firmware/` 顶层检索。固件中心默认选中日期最新的出厂固件。默认检索匹配的出厂固件日期须唯一，同一天更新时替换原文件。
 
 | 情况 | 产品仓库 |
 | --- | --- |
@@ -37,7 +37,7 @@
 
 同一开发板适配多个屏幕时，在固件中心登记一个产品。需要在每个文件名前缀中标明完整屏幕型号时，使用自声明逐个关联 BIN，登记时填写 `manifest` 路径，所有屏幕固件放在同一个产品的 `files` 中。
 
-BIN 命名为 `<产品名>-<屏幕型号>_<固件名>_<YYYYMMDD>.bin`。由维护者确认默认屏幕，其固件名使用 `FactoryOnly`，其余屏幕使用 `Factory`。每个产品至少有一个 `FactoryOnly`，同一产品的出厂日期须唯一。README 写明屏幕型号和用途，新增或替换固件时同步更新 BIN、双语 README 和声明路径。格式见[单产品多屏幕声明](https://github.com/waveshareteam/esp-firmware-sync/blob/main/docs/FIRMWARE_DECLARATION.md#单产品多屏幕)。
+BIN 命名为 `<产品名>-<屏幕型号>_Factory_<YYYYMMDD>.bin`，各屏幕固件统一使用 `Factory`。由维护者将默认屏幕的路径放在 `files` 第一项，两份索引均以该文件作为默认项。README 写明屏幕型号和用途，新增或替换固件时同步更新 BIN、双语 README 和声明路径。格式见[单产品多屏幕声明](https://github.com/waveshareteam/esp-firmware-sync/blob/main/docs/FIRMWARE_DECLARATION.md#单产品多屏幕)。
 
 ## 固件包格式
 
